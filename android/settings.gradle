@@ -1,0 +1,11 @@
+rootProject.name = 'PushNotification'
+include ':react-native-rncryptor'
+project(':react-native-rncryptor').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-rncryptor/android')
+include ':react-native-push-notification'
+project(':react-native-push-notification').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-push-notification/android')
+include ':react-native-push-notification'
+project(':react-native-push-notification').projectDir = file('../node_modules/react-native-push-notification/android')
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'
+include ':react-native-scratch'
+project(':react-native-scratch').projectDir = new File(rootProject.projectDir, 	'../node_modules/react-native-scratch/android')
