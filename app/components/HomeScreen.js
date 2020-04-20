@@ -49,6 +49,7 @@ class HomeScreen extends React.Component {
       InfoIconSize: 25,
       InfoIconBackground: '#ffffff',
       currentGoals: '', //contains a concatenated list of current goals, seperated by {'\n'}
+      finalGoal: null
     };
 
     this.onLayout = this.onLayout.bind(this)
@@ -119,6 +120,11 @@ class HomeScreen extends React.Component {
           .then((new_exam_json) => {
             this.setState({newExam: new_exam_json});
           });
+        //get final_goal
+        storage._retrieveData('final_goal').then((string) => JSON.parse(string))
+        .then((final_goal) => {
+          this.setState({finalGoal: final_goal});
+        });
         //load current goals
         this.getCurrentGoals()
         //load version to detect update
@@ -274,6 +280,10 @@ class HomeScreen extends React.Component {
       )
     //if user has been seen already
     } else {
+      //ask for final goal if not set yet
+      if ((this.state.finalGoal === undefined || this.state.finalGoal === '' || this.state.finalGoal === null)) {
+        this.props.navigation.navigate('SetGoals', {list:['Abschlussnote']})
+      }
       //goto ScratchGrade if new grade
       if (!(this.state.newGrade === undefined || this.state.newGrade === '' || this.state.newGrade === null)) {
         this.setState({newGrade: undefined})
@@ -312,13 +322,12 @@ class HomeScreen extends React.Component {
           <View> 
            <Text style={[styles.greyTextSmall, {marginLeft:-10}]}>Anzahl Prüfungen:  {this.state.examsCount}</Text>
            <Text style={[styles.greyTextSmall, {marginLeft:-10}]}>Durchschnittsnote: {this.state.gradeAvarage}</Text>
+           <Text style={[styles.greyTextSmall, {marginLeft:-10, textDecorationLine: 'underline', marginTop: 8}]}>Deine aktuellen Ziele:</Text>
+           <Text style={[styles.greyTextSmall, {marginLeft:-10, marginTop: 0}]}>Abschlussnote: {this.state.finalGoal}</Text>
            {(() => {
               if (this.state.currentGoals != '') {
-                return (
-                   <View> 
-                    <Text style={[styles.greyTextSmall, {marginLeft:-10, textDecorationLine: 'underline', marginTop: 8}]}>Deine aktuellen Ziele:</Text>
+                return ( 
                     <Text style={[styles.greyTextSmall, {marginLeft:-10, marginTop: 0}]}>{this.state.currentGoals}</Text>
-                  </View>
                 )
               }
             })()}

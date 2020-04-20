@@ -34,11 +34,23 @@ class SetGoalsList extends React.Component {
             this.props.stateHandler(itemValue, this.state.item)
           }}>
           <Picker.Item label="Note wählen.." value="" />
-          <Picker.Item label="1" value={1} />
-          <Picker.Item label="2" value={2} />
-          <Picker.Item label="3" value={3} />
-          <Picker.Item label="4" value={4} />
-          <Picker.Item label="5" value={5} />
+          <Picker.Item label="1.0" value={1.0} />
+          <Picker.Item label="1.2" value={1.2} />
+          <Picker.Item label="1.4" value={1.4} />
+          <Picker.Item label="1.6" value={1.6} />
+          <Picker.Item label="1.8" value={1.8} />
+          <Picker.Item label="2.0" value={2.0} />
+          <Picker.Item label="2.2" value={2.2} />
+          <Picker.Item label="2.4" value={2.4} />
+          <Picker.Item label="2.6" value={2.6} />
+          <Picker.Item label="2.8" value={2.8} />
+          <Picker.Item label="3.0" value={3.0} />
+          <Picker.Item label="3.2" value={3.2} />
+          <Picker.Item label="3.4" value={3.4} />
+          <Picker.Item label="3.6" value={3.6} />
+          <Picker.Item label="3.8" value={3.8} />
+          <Picker.Item label="4.0" value={4.0} />
+          <Picker.Item label="5.0" value={5.0} />
         </Picker>
         <Text></Text>
       </View>

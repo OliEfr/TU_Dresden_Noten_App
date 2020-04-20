@@ -50,6 +50,7 @@ This represents the data contained in the local AsyncStorage on the phone.
     'new_goals': {"Subject1": 1, "Subject2": 2}       //unencrypted, exists if user set new goal for grade which is not available yet
     'internal_version': '1'                           //used, to detect  new update. In ascending order
     'visit_counter': '1'                              //number of times, the user opened the app.
+    'final_goal: '1.0'                                //goal of graduation grade!
 }
 ```
 ### Filesystem

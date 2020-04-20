@@ -16,6 +16,13 @@ const reset = async() => {
     )) === true
   ) {
     //probably better with: AsyncStorage.removeItem('userId');
+    storage._storeData('new_exam', '');
+    storage._storeData('new_goals', '');
+    storage._storeData('new_grade', '');
+    storage._storeData('internal_version', '');
+    storage._storeData('visit_counter', '');
+    storage._storeData('final_grade', '');
+    storage._storeData('final_goal', '');
     storage._storeData('grades_json', '');
     storage._storeData('grades_list', '');
     storage._storeData('university', '');

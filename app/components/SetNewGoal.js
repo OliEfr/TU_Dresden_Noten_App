@@ -20,7 +20,8 @@ class SetNewGoal extends React.Component {
     super(props);
     this.state = {
       new_exams: [],
-      new_goals: {}
+      new_goals: {},
+      notification: ""
     };
   }
 
@@ -35,7 +36,10 @@ class SetNewGoal extends React.Component {
   };
 
   async componentDidMount() {
-      this.setState({new_exams: this.props.navigation.getParam('list')})
+      await this.setState({new_exams: this.props.navigation.getParam('list')})
+      if(this.state.new_exams[0] === "Abschlussnote") {
+        this.setState({notification: "Denke gut darüber nach - du kannst das später nicht ändern!"})
+      }
   }
 
   handleState = (value, item) => {
@@ -70,22 +74,28 @@ class SetNewGoal extends React.Component {
       <ScrollView style={{flex: 1, margin: 30}}>
         <Text style={[styles.orangeTextSmall,{}]}>Welche Noten möchtest du erreichen?{'\n'}</Text>
         <View style={{}}>{this.renderNewExamsList()}</View>
+        <Text style={[styles.blueTextSmall, {textAlign: 'center'}]}>{this.state.notification}{'\n'}</Text>
         <Button
               title="Weiter"
               onPress={async () => {
                 if(this.newGoalsIsValid()) {
+                  //save, if it is 'Abschlussnote' (final_goal)
+                  if(Object.keys(this.state.new_goals)[0] === "Abschlussnote") {
+                    await storage._storeData('final_goal', JSON.stringify(this.state.new_goals['Abschlussnote']));
+                  } else {
                   //save to async storage
                   //goto home screen
-                  await storage._retrieveData('new_goals').then((string) => {return JSON.parse(string)})
-                    .then((new_grade_json) => {
-                      if(typeof new_grade_json === 'object' && new_grade_json !== null) {
-                        Object.keys(this.state.new_goals).forEach(key => new_grade_json[key] = this.state.new_goals[key])
-                      } else {
-                        new_grade_json = this.state.new_goals
-                      }
-                      storage._storeData('new_goals', JSON.stringify(new_grade_json));
-                  });
-                  await storage._storeData('new_exam', '');
+                    await storage._retrieveData('new_goals').then((string) => {return JSON.parse(string)})
+                      .then((new_grade_json) => {
+                        if(typeof new_grade_json === 'object' && new_grade_json !== null) {
+                          Object.keys(this.state.new_goals).forEach(key => new_grade_json[key] = this.state.new_goals[key])
+                        } else {
+                          new_grade_json = this.state.new_goals
+                        }
+                        storage._storeData('new_goals', JSON.stringify(new_grade_json));
+                    });
+                    await storage._storeData('new_exam', '');
+                  }
                   Alert.alert("Super!", "Ich habe es gespeichert.\nViel Spaß beim Lernen!")
                   this.props.navigation.replace('Home');
                 } else {
@@ -145,7 +155,7 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     textAlign: 'center',
     color: '#4a96bf',
-    fontSize: 25,
+    fontSize: 18,
     fontWeight: '500',
     fontFamily: 'Roboto',
   },
