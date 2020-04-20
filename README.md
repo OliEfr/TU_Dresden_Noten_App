@@ -13,7 +13,6 @@ Looking for contributors.
 - Icon bei Push-Notification nicht angezeigt. >> TROUBLES
 - Screen-Transition : Horizontal. See react-navigation docs! >> TROUBLES
 - Make difference between new grade for subject and module: Scratch subject / only show for module
-- new grade als liste: append / remove element. Für: mehrere Noten kommen raus. WICHTIG!
 
 ## ToDo
 ### High Priority
@@ -38,9 +37,10 @@ This represents the data contained in the local AsyncStorage on the phone.
 ```
 {
     'alreadyLaunched': 'true'                         //unencrypted, ='true', if login process was completed once.
-    'new_grade': {name: '',                           //unencrypted, only exists if there is a new grade and user didnt open app since
-                year: '', 
-                mark: ''}
+    'new_grade': {list: [{name: '',                   //unencrypted, list of new grades
+                          year: '', 
+                          mark: ''}, {...}]
+                }
     'login_data': {username: '', password: ''}        //encrypted, used for hisqis login
     'grades_json': see university.js for details      //encrypted, contains relevant user data
     'grades_list': see university.js for details      //unencrypted, list of grades for background task

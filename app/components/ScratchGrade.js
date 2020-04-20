@@ -137,7 +137,12 @@ class ScratchGrade extends React.Component {
                     title="Weiter"
                     disabled={this.state.ButtonDisabled}
                     onPress={ async () => {
-                        storage._storeData('new_grade', '');
+                        //remove first element from storage
+                        await storage._retrieveData('new_grade').then((string) => JSON.parse(string))
+                        .then(async (new_grades) => {
+                          await new_grades.list.shift()
+                          storage._storeData('new_grade', JSON.stringify(new_grades));
+                        });
                         //delete this goal from storage.
                         let old_goals = await JSON.parse(await storage._retrieveData('new_goals', ''));
                         if(typeof old_goals === 'object' && old_goals !== null) {

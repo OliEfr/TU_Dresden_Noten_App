@@ -347,7 +347,7 @@ export default class FlexDirectionBasics extends Component {
     storage._storeData('grades_list', JSON.stringify(my_uni.getGradesList()));
     storage._storeData('university', this.state.myUniversity);
     storage._storeData('studiengang', await my_uni.getStudiengang());
-    storage._storeData('new_grade', '');
+    storage._storeData('new_grade', JSON.stringify({list: []}));
     
     //get avarage grade for scratch later
     let myGradeList = new GradeList(my_uni.getGradesList());

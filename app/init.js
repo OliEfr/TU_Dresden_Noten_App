@@ -90,16 +90,22 @@ const background_task = async() => {
         send_push_notification('Neute Noten!', 'Neue Noten in ' + my_uni.getFirstNewSubjectName() + ' und mehr ..');
       }
 
+      //ToDo: Wenn mehrere Noten auf einmal raus kommen!
       //store information in AsynStorage
       if (newGradeCount > 0) {
         //TODO: do the following only, if new grade is exam
-        await storage._storeData('new_grade', JSON.stringify({subjectName: my_uni.getFirstNewSubjectName(), subjectYear: my_uni.getFirstNewSubjectYear(), subjectMark: my_uni.getFirstNewSubjectGrade()}));
+        await storage._retrieveData('new_grade').then((string) => JSON.parse(string))
+          .then(async (new_grades) => {
+            //await new_grades.list.push({subjectName: my_uni.getFirstNewSubjectName(), subjectYear: my_uni.getFirstNewSubjectYear(), subjectMark: my_uni.getFirstNewSubjectGrade()})
+            let concat_new_grades = await new_grades.list.concat(my_uni.getNewGradesInformation())
+            await storage._storeData('new_grade', JSON.stringify({list: concat_new_grades}));
+        });
       }
 
       //push notificationa and store data if user enrolled for new exam
       let new_exams = await my_uni.enrolledNewExam()
       if (new_exams !== false) {
-        send_push_notification('Neue Prüfung', 'Setze dir jetzt Ziele!');
+        send_push_notification('Neue Prüfung angemeldet', 'Setze dir jetzt Ziele!');
         storage._storeData('new_exam', JSON.stringify({list: new_exams}));
       }
       

@@ -69,6 +69,18 @@ export default class Uni {
         return this.uni.newGradesList[Object.keys(this.uni.newGradesList)[0]]['grade'];
     }
 
+    getNewGradesInformation(){
+        //Returns list with the follwing:
+        //[{name: '',year: '', mark: ''}, {...}]
+        let list = []
+        Object.keys(this.uni.newGradesList).forEach(key => {
+            if(this.uni.newGradesList[key]['grade'] !== '') {
+                list.push({subjectName: this.uni.newGradesList[key]['name'], subjectYear: this.uni.newGradesList[key]['year'], subjectMark: this.uni.newGradesList[key]['grade']})
+            }
+        })
+        return list
+    }
+
     enrolledNewExam(){
         /* 
             return type:
@@ -79,7 +91,6 @@ export default class Uni {
             if (Object.keys(this.uni.newGradesList).length > 0 ) {
                 for (var key in this.uni.newGradesList) {
                     if (this.uni.newGradesList[key]['grade'] === '') {
-                        //console.log('FOUND NEW: ' + this.uni.newGradesList[key]['name'])
                         examList.push(this.uni.newGradesList[key]['name'])
                     }
                 }

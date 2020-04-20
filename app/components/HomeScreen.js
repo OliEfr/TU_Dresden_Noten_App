@@ -32,7 +32,7 @@ class HomeScreen extends React.Component {
 	super(props);
     this.state = {
       firstLaunch: null,  //true, if user starts  app first time
-      newGrade: {}, //{subjectName: '', subjectYear: '', subjectMark: ''} | not null, when new grade
+      newGrade: undefined, //{subjectName: '', subjectYear: '', subjectMark: ''} | not null, when new grade
       newExam: {},  //{list: [Exam1, Exam2, ]} | not null, when enrolled to new exam
       grades_json: {},  //store all current grades and subjects. See university.js for details
       data: { //data for grade overview statistic
@@ -111,7 +111,8 @@ class HomeScreen extends React.Component {
         //load new grade, to see whether there is a new grade
         storage._retrieveData('new_grade').then((string) => JSON.parse(string))
           .then((new_grade_json) => {
-            this.setState({newGrade: new_grade_json});
+            //store first element of this list
+            this.setState({newGrade: new_grade_json.list[0]});
           });
         //load new exam, to see whether enrolled in new exam
         storage._retrieveData('new_exam').then((string) => JSON.parse(string))
@@ -274,8 +275,8 @@ class HomeScreen extends React.Component {
     //if user has been seen already
     } else {
       //goto ScratchGrade if new grade
-      if (this.state.newGrade !== null) {
-        this.setState({newGrade: null})
+      if (!(this.state.newGrade === undefined || this.state.newGrade === '' || this.state.newGrade === null)) {
+        this.setState({newGrade: undefined})
         //use navigate because this function is called multiple times. Actually this is a bug..
         this.props.navigation.navigate('Scratch', this.state.newGrade)
         //For testing:

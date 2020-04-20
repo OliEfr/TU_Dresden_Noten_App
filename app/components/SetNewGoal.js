@@ -72,12 +72,20 @@ class SetNewGoal extends React.Component {
         <View style={{}}>{this.renderNewExamsList()}</View>
         <Button
               title="Weiter"
-              onPress={() => {
+              onPress={async () => {
                 if(this.newGoalsIsValid()) {
                   //save to async storage
                   //goto home screen
-                  storage._storeData('new_goals', JSON.stringify(this.state.new_goals));
-                  storage._storeData('new_exam', '');
+                  await storage._retrieveData('new_goals').then((string) => {return JSON.parse(string)})
+                    .then((new_grade_json) => {
+                      if(typeof new_grade_json === 'object' && new_grade_json !== null) {
+                        Object.keys(this.state.new_goals).forEach(key => new_grade_json[key] = this.state.new_goals[key])
+                      } else {
+                        new_grade_json = this.state.new_goals
+                      }
+                      storage._storeData('new_goals', JSON.stringify(new_grade_json));
+                  });
+                  await storage._storeData('new_exam', '');
                   Alert.alert("Super!", "Ich habe es gespeichert.\nViel Spaß beim Lernen!")
                   this.props.navigation.replace('Home');
                 } else {

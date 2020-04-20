@@ -21,7 +21,7 @@ const reset = async() => {
     storage._storeData('university', '');
     storage._storeData('alreadyLaunched', '');
     storage._storeData('studiengang', '');
-    storage._storeData('new_grade', '');
+    storage._storeData('new_grade', JSON.stringify('{list: []}'));
     Alert.alert('Alle Daten wurden gelöscht.', 'Starte die App neu.')
   } else {Alert.alert('Nicht gelöscht', 'Du bist weiterhin angemeldet.')}
   
@@ -31,8 +31,12 @@ const send_push_notification = () => {
   init.send_push_notification('send1!', 'send2!');
 }
 
-const store_new_grade = () => {
-  storage._storeData('new_grade', JSON.stringify({subjectName: 'Chemie', subjectYear: 'WiSe 17/18', subjectMark: '2,0'}));
+const store_new_grade = async () => {
+  await storage._retrieveData('new_grade').then((string) => JSON.parse(string))
+    .then(async (new_grades) => {
+      await new_grades.list.push({subjectName: 'TestSubject', subjectYear: 'SoSe20', subjectMark: '1,0'})
+      storage._storeData('new_grade', JSON.stringify(new_grades));
+  });
 }
 
 const AsyncAlert = async (title, text, yesButton = 'Weiter', noButton = 'Zurück') =>
