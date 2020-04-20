@@ -365,10 +365,7 @@ class HomeScreen extends React.Component {
             />
           )}
           <View style={{marginHorizontal: 12, marginTop: 5}}>{this.renderGradesList()}</View>
-          <View style={{marginHorizontal: 60, marginVertical: 20}}>
-            <Button
-              title="Entwickler kontaktieren"
-              onPress={() => this.props.navigation.push('ContactDeveloper')}/></View>
+          <View style={{marginHorizontal: 60, marginVertical: 20}}></View>
           {//Following buttons are for debugging only
           }
           {<View style={{marginHorizontal: 60, marginBottom: 20}}>

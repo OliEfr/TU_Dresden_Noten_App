@@ -62,7 +62,6 @@ All related files can be found in /app.
 - **init.js**: functions, which are performed on app start: register push-notification, register background-task.
 - **app/assets**: Containts assets. For now only animations for lottie.
 - **app/components**: contains all components (e.g. screens, elements) which are display on UI
-  - **ContactDeveloper.js**: Screen to contact developer
   - **CurrentTasks.js**: Screen to show current tasks
   - **GradesList.js**: Component, which is the grades list in Home Screen. Used in HomeScreen.js.
   - **HomeScreen.js**: This is called on app start. Here it is decided which screen should be shown to the user on start. It also containt visual elements of the home screen (this should be changed in the future!)

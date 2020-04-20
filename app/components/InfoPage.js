@@ -6,7 +6,7 @@
 //Here goes updates notes!
 
 import React from 'react';
-import {ScrollView, Text, StyleSheet, } from 'react-native';
+import {ScrollView, Text, StyleSheet, Button,} from 'react-native';
 
 //import 3rd party packages
 import {withNavigation} from 'react-navigation';
@@ -35,12 +35,15 @@ class InfoPage extends React.Component {
 
     return (
       <ScrollView style={{flex: 1, margin: 30}}>
-        <Text style={[styles.greyTextSmall,{}]}>uniXP ist ein studentisches Projekt.{'\n'}</Text>
-        <Text style={[styles.greyTextSmall,{fontSize: 22, lineHeight: 50, textDecorationLine: 'underline'}]}>Neue Features:{'\n'}</Text>
-        <Text style={[styles.greyTextSmall,{}]}>Push-Benachrichtigung bei neuen Noten.{'\n'}</Text>
-        <Text style={[styles.greyTextSmall,{}]}>Klicke auf eine Klausur um die Notenstatistik zu sehen.{'\n'}</Text>
-        <Text style={[styles.greyTextSmall,{}]}>Setze dir Lernziele, wenn du dich für Klausuren anmeldest!{'\n'}</Text>
-        <Text style={[styles.greyTextSmall,{fontStyle: 'italic'}]}>More coming soon !{'\n'}</Text>
+        <Text style={[styles.greyTextSmall,{}]}>Diese App ist ein studentisches Projekt und soll zeigen, wie Digitalisierung aussehen kann.{'\n'}</Text>
+        <Text style={[styles.greyTextSmall,{lineHeight: 50, textDecorationLine: 'underline'}]}>Aktuelle Features:</Text>
+        <Text style={[styles.greyTextSmall,{}]}>Push-Benachrichtigung bei neuen Noten.</Text>
+        <Text style={[styles.greyTextSmall,{}]}>Lernziele setzen, wenn du dich für Klausuren anmeldest.</Text>
+        <Text style={[styles.greyTextSmall,{fontStyle: 'italic'}]}>More coming soon !</Text>
+        <Text style={[styles.greyTextSmall,{}]}>{'\n'}Fragen, Feedback, Mitmachen?{'\n'}</Text>
+        <Button 
+          onPress={() => Linking.openURL('mailto:ollidev97@gmail.com?subject=uniXP Contact') }
+          title="Kontaktiere mich" />
       </ScrollView>
     );
   }
