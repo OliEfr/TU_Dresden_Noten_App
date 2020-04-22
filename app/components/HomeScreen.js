@@ -152,19 +152,19 @@ class HomeScreen extends React.Component {
         .then((visit_counter) => {
           let current_visit = visit_counter + 1
           storage._storeData('visit_counter', current_visit.toString())
-          if (current_visit === 7) {
-            Alert.alert(
-              'Danke!',
-              'Cool, dass du die App nutzt. Bitte sende uns jetzt kurz Feedback:',
-              [
-                {text: 'Feedback senden', onPress: () => {
-                  Linking.openURL('mailto:ollidev97@gmail.com?subject=uniXP Feedback&body=Bitte gib hier ein kurzes Feedback zur App. Was soll verbessert werden? Bekommst du Push-Benachrichtigungen? Was wünschst du dir für die Zukunft?')
-                },
-                }
-              ],
-              { cancelable: false }
-            )
-          }
+          //if (current_visit === 7) {
+          //  Alert.alert(
+          //    'Danke!',
+          //    'Cool, dass du die App nutzt. Bitte sende uns jetzt kurz Feedback:',
+          //    [
+          //      {text: 'Feedback senden', onPress: () => {
+          //        Linking.openURL('mailto:ollidev97@gmail.com?subject=uniXP Feedback&body=Bitte gib hier ein kurzes Feedback zur App. Was soll verbessert werden? Bekommst du Push-Benachrichtigungen? Was wünschst du dir für die Zukunft?')
+          //      },
+          //      }
+          //    ],
+          //    { cancelable: false }
+          //  )
+          //}
         })
 
         //prepare grade list for display in chart
