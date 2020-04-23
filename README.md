@@ -1,6 +1,8 @@
 # UniApp
 App for TU Dresden Students, Developed by TU Dresden Students.
+
 Written in React-Native. Currently developed for Android only :/
+
 100% local - 100% students - 100% open source
 
 # Project Strategy 
