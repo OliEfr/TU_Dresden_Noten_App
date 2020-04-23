@@ -23,7 +23,7 @@ import BackgroundFetch from 'react-native-background-fetch';
 import * as utils from '../utils/utils'
 
 // USER VARIABLES
-const current_version = 13  //used to manage versions internally and trigger events on app-update
+const current_version = 16  //used to manage versions internally and trigger events on app-update
 //
 
 
@@ -49,7 +49,7 @@ class HomeScreen extends React.Component {
       InfoIconSize: 25,
       InfoIconBackground: '#ffffff',
       currentGoals: '', //contains a concatenated list of current goals, seperated by {'\n'}
-      finalGoal: null
+      finalGoal: null, //final gratuation goal
     };
 
     this.onLayout = this.onLayout.bind(this)
@@ -317,7 +317,12 @@ class HomeScreen extends React.Component {
                size={this.state.InfoIconSize}
                color={this.state.InfoIconColor}
                backgroundColor={this.state.InfoIconBackground}
-               onPress={() => this.props.navigation.push('Info')}></Icon.Button>
+               onPress={() => {
+                this.setState({InfoIconColor: '#BBBBBB'})
+                this.setState({InfoIconSize: 25})
+                this.setState({InfoIconBackground: '#ffffff'})
+                 this.props.navigation.push('Info')
+                 }}></Icon.Button>
             </View>
           <View> 
            <Text style={[styles.greyTextSmall, {marginLeft:-10}]}>Anzahl Prüfungen:  {this.state.examsCount}</Text>
@@ -365,10 +370,9 @@ class HomeScreen extends React.Component {
             />
           )}
           <View style={{marginHorizontal: 12, marginTop: 5}}>{this.renderGradesList()}</View>
-          <View style={{marginHorizontal: 60, marginVertical: 20}}></View>
           {//Following buttons are for debugging only
           }
-          {<View style={{marginHorizontal: 60, marginBottom: 20}}>
+          {<View style={{marginHorizontal: 60, marginVertical: 20}}>
             <Button
               title="App zurücksetzten"
               onPress={() => utils.reset()}/></View>}

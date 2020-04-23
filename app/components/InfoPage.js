@@ -6,7 +6,7 @@
 //Here goes updates notes!
 
 import React from 'react';
-import {ScrollView, Text, StyleSheet, Button,} from 'react-native';
+import {ScrollView, Text, StyleSheet, Button, Linking} from 'react-native';
 
 //import 3rd party packages
 import {withNavigation} from 'react-navigation';
@@ -39,11 +39,15 @@ class InfoPage extends React.Component {
         <Text style={[styles.greyTextSmall,{lineHeight: 50, textDecorationLine: 'underline'}]}>Aktuelle Features:</Text>
         <Text style={[styles.greyTextSmall,{}]}>Push-Benachrichtigung bei neuen Noten.</Text>
         <Text style={[styles.greyTextSmall,{}]}>Lernziele setzen, wenn du dich für Klausuren anmeldest.</Text>
-        <Text style={[styles.greyTextSmall,{fontStyle: 'italic'}]}>More coming soon !</Text>
+        <Text style={[styles.greyTextSmall,{fontStyle: 'italic'}]}>{'\n'}More coming soon !</Text>
         <Text style={[styles.greyTextSmall,{}]}>{'\n'}Fragen, Feedback, Mitmachen?{'\n'}</Text>
         <Button 
           onPress={() => Linking.openURL('mailto:ollidev97@gmail.com?subject=GradeRace Contact') }
-          title="Kontaktiere mich" />
+          title="Kontakt" />
+        <Text style={{color: 'blue'}}
+          onPress={() => Linking.openURL('http://google.com')}>
+          Github
+        </Text>
       </ScrollView>
     );
   }
