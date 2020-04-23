@@ -1,9 +1,9 @@
 # UniApp
-A App for TU Dresden Students, Developed by TU Dresden Students.
+App for TU Dresden Students, Developed by TU Dresden Students.
 Written in React-Native. Currently developed for Android only :/
-100% local - 100% students - 100% open source!
+100% local - 100% students - 100% open source
 
-# Strategy 
+# Project Strategy 
 ## Current Project Status
 Conduction survey among TU Dresden Students.
 Looking for contributors.
@@ -28,11 +28,10 @@ currently only me
 
 ## ToDo, on releasing new version (only for OliEfr)
 - change internal_version in HomeScreen.js
-- add update notes in InfoPage.js
+- add update notes in .js
 - use real fetch() function
 
-## Documentation
-
+# Documentation
 ### local storage (AsyncStorage)
 This represents the data contained in the local AsyncStorage on the phone.
 ```
@@ -70,8 +69,10 @@ All related files can be found in /app.
   - **ScratchGrade.js**: Screen, where the user can discover a new grade
   - **SetGoalList.js**: Component, containing a list of subjects where the user can set goals. Used in SetNewGoal.js.
   - **SetNewGoal.js**: Screen, where the user can set new goals. 
+  -**InfoPage.js**: A Info page for the user which is displayed when the user presses the i-Icon in HomeScreen at the top right.
 
-## Setting up the project
+# How to use this repo
+This repo contains all files required to build the app yourself.
 ### 1. Setting up your PC
 Working with Linux (Ubuntu) is recommended.
 This repo did not work on windows so far.
