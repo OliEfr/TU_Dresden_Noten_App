@@ -44,9 +44,9 @@ class InfoPage extends React.Component {
         <Button 
           onPress={() => Linking.openURL('mailto:ollidev97@gmail.com?subject=GradeRace Contact') }
           title="Kontakt" />
-        <Text style={{color: 'blue'}}
-          onPress={() => Linking.openURL('http://google.com')}>
-          Github
+        <Text style={[styles.linkText,{}]}
+          onPress={() => Linking.openURL('https://github.com/OliEfr/TU_Dresden_Noten_App')}>
+          {'\n'}Github
         </Text>
       </ScrollView>
     );
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     lineHeight: 25,
     textDecorationLine: "underline",
     color: '#0000FF',
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '500',
     fontFamily: 'Roboto',
     textAlign: 'center',
