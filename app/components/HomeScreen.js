@@ -158,7 +158,7 @@ class HomeScreen extends React.Component {
           //    'Cool, dass du die App nutzt. Bitte sende uns jetzt kurz Feedback:',
           //    [
           //      {text: 'Feedback senden', onPress: () => {
-          //        Linking.openURL('mailto:ollidev97@gmail.com?subject=uniXP Feedback&body=Bitte gib hier ein kurzes Feedback zur App. Was soll verbessert werden? Bekommst du Push-Benachrichtigungen? Was wünschst du dir für die Zukunft?')
+          //        Linking.openURL('mailto:ollidev97@gmail.com?subject=GradeRace Feedback&body=Bitte gib hier ein kurzes Feedback zur App. Was soll verbessert werden? Bekommst du Push-Benachrichtigungen? Was wünschst du dir für die Zukunft?')
           //      },
           //      }
           //    ],
@@ -196,7 +196,7 @@ class HomeScreen extends React.Component {
         let new_goals_concat = ''
         if(typeof new_goals_json === 'object' && new_goals_json !== null) {
           Object.keys(new_goals_json).forEach(key => {
-            new_goals_concat = new_goals_concat + key + ": " + new_goals_json[key] + '\n'
+            new_goals_concat = new_goals_concat + key + ": " + (new_goals_json[key]).toFixed(1) + '\n'
           })
         }
         this.setState({currentGoals: new_goals_concat})
@@ -248,7 +248,7 @@ class HomeScreen extends React.Component {
   };
 
   RenderLoadingScreen = () => {
-    return <Text style={[styles.orangeTextBold ,{color: '#4a96bf' }]}>uni<Text style={styles.orangeTextBold}>XP</Text></Text>;
+    return <Text style={[styles.orangeTextBold ,{color: '#4a96bf' }]}>Grade<Text style={styles.orangeTextBold}>Race</Text></Text>;
   };
 
   //main render function
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
     lineHeight: 100,
     textAlign: 'center',
     color: '#f06449',
-    fontSize: 90,
+    fontSize: 50,
     fontWeight: '400',
     fontFamily: 'Roboto',
   },

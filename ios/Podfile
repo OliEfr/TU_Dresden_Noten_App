@@ -42,7 +42,7 @@ target 'PushNotification' do
 
   target 'PushNotificationTests' do
     inherit! :search_paths
-    # Pods for testing
+    # Pods for GradeRaceing
   end
 
   use_native_modules!
@@ -53,7 +53,7 @@ target 'PushNotification-tvOS' do
 
   target 'PushNotification-tvOSTests' do
     inherit! :search_paths
-    # Pods for testing
+    # Pods for GradeRaceing
   end
 
 end

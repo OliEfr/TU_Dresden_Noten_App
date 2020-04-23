@@ -84,7 +84,7 @@ export default class FlexDirectionBasics extends Component {
       return (
         <View>
           <Text style={[styles.blueTextSmall, ]}>Starte durch, mit{'\n'}</Text>
-          <Text style={[styles.orangeTextBold,]}>uniXP</Text>
+          <Text style={[styles.orangeTextBold,]}>GradeRace</Text>
         </View>
       );
     }
@@ -97,7 +97,7 @@ export default class FlexDirectionBasics extends Component {
           <Text style={[styles.orangeText, {fontSize: 30, lineHeight: 50}]}>Lernziele</Text>
           <Text style={[styles.orangeText, {fontSize: 30, lineHeight: 50}]}>Benachrichtigungen</Text>
           <Text style={[styles.orangeText, {fontSize: 30, lineHeight: 100, fontWeight: 'bold'}]}>Alles in einer App!</Text>
-          <Text style={[styles.blueTextSmall, {lineHeight: 40}]}>{'\n'}Von Studenten, für Studenten.</Text>
+
         </View>
       );
     }
@@ -106,10 +106,10 @@ export default class FlexDirectionBasics extends Component {
     if(this.state.IntroScreenNr === 3) {
       return(
         <View>
-          <Text style={[styles.orangeText, {fontSize: 30, lineHeight: 50}]}>Das Projekt soll zeigen, wie Digitalisierung an der Uni aussehen kann!</Text>
-          <Text style={[styles.blueTextSmall, {lineHeight: 40}]}>
-          {'\n'}Setze dir Lernziele, sobald du dich für Prüfungen anmeldest!
-          </Text>
+          <Text style={[styles.orangeText, {fontSize: 30, lineHeight: 50}]}>So kann Digitalisierung an der Uni aussehen!</Text>
+          <Text style={[styles.blueTextSmall, {lineHeight: 40}]}>{'\n'}100% lokal</Text>
+          <Text style={[styles.blueTextSmall, {lineHeight: 40}]}>100% studentisch</Text>
+          <Text style={[styles.blueTextSmall, {lineHeight: 40}]}>100% open source</Text>
         </View>
       )
     }
@@ -173,7 +173,7 @@ export default class FlexDirectionBasics extends Component {
           <Text style={[styles.blueTextSmall, {fontSize: 15}]}>
             {this.state.myLoginErrorMsg}
           </Text>
-          <Text style={[styles.blueTextSmall, {fontSize: 18, marginHorizontal: 20}]}>Deine Daten werden nur verschlüsselt auf diesem Gerät gespeichert.</Text>
+          <Text style={[styles.blueTextSmall, {fontSize: 18, marginHorizontal: 20}]}>Nur lokal und verschlüsselt gespeichert.</Text>
           {/*<ActivityIndicator
             size="large"
             color="#f06449"
@@ -189,7 +189,7 @@ export default class FlexDirectionBasics extends Component {
     if (this.state.IntroScreenNr === 5) {
       return(
         <View style={{flex: 1, justifyContent: 'space-around', alignItems: 'center'}}>
-          <Text style={[styles.orangeText,  {fontSize: 30, lineHeight: 50, marginHorizontal:20 }]}>Entdecke deine Durschschnittsnote.</Text>
+          <Text style={[styles.orangeText,  {fontSize: 25, lineHeight: 50, marginHorizontal:20 }]}>Entdecke deine Durschschnittsnote.</Text>
           <Text style={[styles.blueTextSmall,{marginBottom: 20}]}> Fange an mit rubbeln:</Text>
           <View style={[styles.scratchBox, styles.grade, {}]}>
             {(() => {
@@ -304,7 +304,7 @@ export default class FlexDirectionBasics extends Component {
         'Leider ist jExam noch nicht in die App integriert. Falls du Lust hat mitzuwirken, melde dich bei mir:',
         [
           {text: 'Entwickler kontaktieren', onPress: () => {
-            Linking.openURL('mailto:ollidev97@gmail.com?subject=uniXP Development')
+            Linking.openURL('mailto:ollidev97@gmail.com?subject=GradeRace Development')
           },
           }
         ],
@@ -506,7 +506,7 @@ scratchBox: {
     lineHeight: 70,
     textAlign: 'center',
     color: '#f06449',
-    fontSize: 40,
+    fontSize: 35,
     fontWeight: '100',
     fontFamily: 'Roboto',
   },
@@ -522,7 +522,7 @@ scratchBox: {
     lineHeight: 100,
     textAlign: 'center',
     color: '#f06449',
-    fontSize: 90,
+    fontSize: 50,
     fontWeight: '400',
     fontFamily: 'Roboto',
   },

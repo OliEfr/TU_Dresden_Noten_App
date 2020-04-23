@@ -61,7 +61,6 @@ class ScratchGrade extends React.Component {
         // show animation
         this.setState({renderAnimation: true})
         console.log(parseFloat(this.state.myGrade.replace(",", ".")))
-        console.log(parseFloat(this.state.myGoal))
         if(parseFloat(this.state.myGrade.replace(",", ".")) <= parseFloat(this.state.myGoal)) {
             this.setState({status: 'ReachedGoal'})
             this.congrats_animation.play()

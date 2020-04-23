@@ -34,14 +34,14 @@ class CurrentTasks extends React.Component {
 
     return (
       <ScrollView style={{flex: 1, margin: 30}}>
-        <Text style={[styles.greyTextSmall,{}]}>Ich habe Bock mit neusten Technologien zu Arbeiten. Daraus ist uniXP entstanden.{'\n'}</Text>
+        <Text style={[styles.greyTextSmall,{}]}>Ich habe Bock mit neusten Technologien zu Arbeiten. Daraus ist GradeRace entstanden.{'\n'}</Text>
         <Text style={[styles.greyTextSmall,{}]}>Die App ist für alle Ideen und Features offen!{'\n'}</Text>
         <Text style={[styles.greyTextSmall,{}]}>Du willst mitzumachen? Ich suche nach:</Text>
         <Text style={[styles.IdeaText,{}]}>Backend Dev (DB, Infrastructure){'\n'}Front-End Dev (React Native){'\n'}iOS Dev{'\n'}</Text>
         <Text style={[styles.greyTextSmall,{}]}>Upcoming ToDo meinerseits:</Text>
         <Text style={[styles.IdeaText,{}]}>UI-Rework{'\n'}Feature: Lernziele setzen{'\n'}iOS implementation{'\n'}</Text>
         <Button 
-          onPress={() => Linking.openURL('mailto:ollidev97@gmail.com?subject=uniXP Development') }
+          onPress={() => Linking.openURL('mailto:ollidev97@gmail.com?subject=GradeRace Development') }
           title="E-Mail senden" />
       </ScrollView>
     );

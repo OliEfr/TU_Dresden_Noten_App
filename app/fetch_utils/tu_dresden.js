@@ -144,7 +144,7 @@ export default class tud_fetch extends University {
     }
 
     //fetch html from local server --> Use for testing purposes.
-    fetch(){
+    fetch_(){
         return new Promise((resolve, reject) => {
             fetch('http://192.168.178.39:8887/', {'credentials':'omit','headers':{'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,/;q=0.8,application/signed-exchange;v=b3','accept-language':'de-DE,de;q=0.9,en-DE;q=0.8,en-GB;q=0.7,en-US;q=0.6,en;q=0.5','cache-control':'max-age=0','upgrade-insecure-requests':'1'},'referrerPolicy':'no-referrer-when-downgrade','body':null,'method':'GET','mode':'cors'})
                 .then((re)=> {return re.text();})
@@ -171,7 +171,7 @@ export default class tud_fetch extends University {
     
     //fetch html
     //set credentials=same-origin required for automatic cookie-handlin
-    fetch_(){
+    fetch(){
         return new Promise((resolve, reject) => {
             let asi = '';
             fetch('https://qis.dez.tu-dresden.de/qisserver/rds?state=user&type=1&category=auth.login&startpage=portal.vm',

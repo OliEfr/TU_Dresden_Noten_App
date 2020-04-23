@@ -1,13 +1,14 @@
 # UniApp
 A App for TU Dresden Students, Developed by TU Dresden Students.
-Written in React-Native. Currently developed for Android only.
+Written in React-Native. Currently developed for Android only :/
+100% local - 100% students - 100% open source!
 
 # Strategy 
 ## Current Project Status
 Conduction survey among TU Dresden Students.
 Looking for contributors.
 
-## Feedback on Release v0.1
+## Feedback / Bugs
 
 - 0011 in der Notenübersicht-Chart entfernen
 - Icon bei Push-Notification nicht angezeigt. >> TROUBLES

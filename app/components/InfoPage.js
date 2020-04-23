@@ -42,7 +42,7 @@ class InfoPage extends React.Component {
         <Text style={[styles.greyTextSmall,{fontStyle: 'italic'}]}>More coming soon !</Text>
         <Text style={[styles.greyTextSmall,{}]}>{'\n'}Fragen, Feedback, Mitmachen?{'\n'}</Text>
         <Button 
-          onPress={() => Linking.openURL('mailto:ollidev97@gmail.com?subject=uniXP Contact') }
+          onPress={() => Linking.openURL('mailto:ollidev97@gmail.com?subject=GradeRace Contact') }
           title="Kontaktiere mich" />
       </ScrollView>
     );
