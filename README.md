@@ -5,6 +5,8 @@ Written in React-Native. Currently developed for Android only :/
 
 100% local - 100% students - 100% open source
 
+Contact: ollidev97@gmail.com
+
 # Project Strategy 
 ## Current Project Status
 Conduction survey among TU Dresden Students.
