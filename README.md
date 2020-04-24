@@ -72,7 +72,14 @@ All related files can be found in /app.
   - **ScratchGrade.js**: Screen, where the user can discover a new grade
   - **SetGoalList.js**: Component, containing a list of subjects where the user can set goals. Used in SetNewGoal.js.
   - **SetNewGoal.js**: Screen, where the user can set new goals. 
-  -**InfoPage.js**: A Info page for the user which is displayed when the user presses the i-Icon in HomeScreen at the top right.
+  - **InfoPage.js**: A Info page for the user which is displayed when the user presses the i-Icon in HomeScreen at the top right.
+- **app/fetch_utils**: this files handle direct http-communication with hisqis. In the future, more universities should be supported. All of them inherit from university.js.
+- **app/utils**: other utils
+  - **ExamDetailsClass.js**: Used in GradeDetails.js for some calculations
+  - **ExamListClass.js**: Used in GradesList.js to show chart
+  - **storage.js**: for interaction with local storage
+  - **uni.js**: this class puts an level of abstraction on the users raw data obtained by the fetch_utils.
+  - **utils.js**: other utils, e.g. for development purposes
 
 # How to use this repo
 This repo contains all files required to build the app yourself.
