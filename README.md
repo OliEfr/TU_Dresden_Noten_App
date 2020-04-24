@@ -1,4 +1,4 @@
-# UniApp
+# TU Dresden Noten App - GradeRace
 App for TU Dresden Students, Developed by TU Dresden Students.
 
 Written in React-Native. Currently developed for Android only :/
