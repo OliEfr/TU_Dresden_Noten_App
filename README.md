@@ -9,8 +9,8 @@ Contact: ollidev97@gmail.com
 
 # Project Strategy 
 ## Current Project Status
-Conduction survey among TU Dresden Students.
-Looking for contributors.
+- Conduction survey among TU Dresden Students.
+- Looking for contributors.
 
 ## Feedback / Bugs
 
