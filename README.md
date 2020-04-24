@@ -25,7 +25,6 @@ Contact: ollidev97@gmail.com
 - Notenspiegel Front- und Backend
 - support selma und jexam
 - make available for iOS
-- Ziel für Abschlussnote setzen & anzeigen
 
 ## Contributors
 currently only me
