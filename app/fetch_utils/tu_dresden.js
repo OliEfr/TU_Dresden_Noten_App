@@ -40,7 +40,7 @@ export default class tud_fetch extends University {
             //this.fetch().then(()=> {
             //    this.parseUserInfo();
             //}).then(()=>{
-                resolve(this.studiengang);
+            resolve(this.studiengang);
             //}).catch(e => {
             //    console.log('Error in fetch name: ' + e)
             //    reject();
@@ -50,13 +50,11 @@ export default class tud_fetch extends University {
 
     getGrades(){
         return new Promise((resolve, reject) => {
-            this.fetch().then(() => this.parseGrades()).then(()=>{
-                resolve(this.grades);
-            })
-            .catch(e=> {
-                reject(e)
-            });
-        });
+            this.fetch()
+            .then(() => this.parseGrades())
+            .then(()=>{ resolve(this.grades)})
+            .catch(e=> {reject(e)})
+        })
     }
 
     //read grades
@@ -132,13 +130,21 @@ export default class tud_fetch extends University {
             var that = this;
             this.$("table[summary='Liste der Stammdaten des Studierenden'] > tbody").children().each(function() {
                 if (that.$(this).children().first().text() === 'Name des Studierenden:') {that.name = that.$(this).children().next().text();}
-                //for some reason Studiengang is not available here
+                //for some reason Studiengang is not  always available here. See below for solution
                 //if (that.$(this).children().first().text().includes("Studiengang")) {that.studiengang = that.$(this).children().next().text();}
             });
-            //studiengang is contained in $treeViewView
-            this.studiengang = this.$treeView('#visual-portal-wrapper').children('form').children('ul').children().first().children('ul').text().trim().split(" ")[0]
-            //Backup solution:
-            //this.studiengang = this.$("table[summary!='Liste der Stammdaten des Studierenden'] > tbody").children().eq(1).children().text().split(" ").pop().trim();
+            //There are two options to get the studiengang
+            try {
+                this.studiengang = this.$treeView('#visual-portal-wrapper').children('form').children('ul').children().first().children('ul').text().trim().split(" ")[0]
+                if(this.studiengang === "") {throw 'Empty studiengang.'}
+            } catch(error) {
+                console.log('Could not get studiengang first try: ' + error)
+                try {
+                    this.studiengang = this.$("table[summary!='Liste der Stammdaten des Studierenden'] > tbody").children().eq(1).children().text().split(" ").pop().trim();
+                } catch (error) {
+                    console.log('Could not get studiengang second try: ' + error)
+                }
+            }
             resolve(true);
         });
     }
@@ -173,10 +179,11 @@ export default class tud_fetch extends University {
     //set credentials=same-origin required for automatic cookie-handlin
     fetch(){
         return new Promise((resolve, reject) => {
-            let asi = '';
-            fetch('https://qis.dez.tu-dresden.de/qisserver/rds?state=user&type=1&category=auth.login&startpage=portal.vm',
-             {'credentials':'same-origin',
-             'headers':{
+            let asi = ''
+            let graduation_id =''
+            fetch('https://qis.dez.tu-dresden.de/qisserver/rds?state=user&type=1&category=auth.login&startpage=portal.vm',{
+                'credentials':'same-origin',
+                'headers':{
                 'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
                 'accept-language':'de-DE,de;q=0.9,en-DE;q=0.8,en-GB;q=0.7,en-US;q=0.6,en;q=0.5',
                 'cache-control':'max-age=0',
@@ -200,29 +207,31 @@ export default class tud_fetch extends University {
                 return cheerio.load(text);
             })
             .then($ => {
-                //extracting link, asi and jsessionid
-                    //no idea what asi is
-                    //jsessionid seems to be for some kind of cookie management
+                //extracting asi
                 var link = $('.liste li:nth-child(3)').children().attr('href');
                 asi = link.split('asi=').pop();
                 return asi;
             })
             .then(asi => {
-                fetch("https://qis.dez.tu-dresden.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=notenspiegelStudent&next=tree.vm&nextdir=qispos/notenspiegel/student&menuid=notenspiegelStudent&breadcrumb=notenKlassenSpiegel&breadCrumbSource=loggedin&asi=" + asi, {
-                    "credentials":"include",
-                    "headers":{
-                        "accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,/;q=0.8,application/signed-exchange;v=b3",
-                        "accept-language":"de-DE,de;q=0.9,en-DE;q=0.8,en-GB;q=0.7,en-US;q=0.6,en;q=0.5",
-                        "upgrade-insecure-requests":"1"
-                    },
-                    "referrer":"https://qis.dez.tu-dresden.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=user&type=0&category=menu.browse&startpage=portal.vm",
-                    "referrerPolicy":"no-referrer-when-downgrade",
-                    "body":null,
-                    "method":"GET",
-                    "mode":"cors"
-            }) 
-            .then(resp =>{
-                return resp.text();
+                return(
+                    fetch("https://qis.dez.tu-dresden.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=notenspiegelStudent&next=tree.vm&nextdir=qispos/notenspiegel/student&menuid=notenspiegelStudent&breadcrumb=notenKlassenSpiegel&breadCrumbSource=loggedin&asi=" + asi, {
+                        "credentials":"include",
+                        "headers":{
+                            "accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,/;q=0.8,application/signed-exchange;v=b3",
+                            "accept-language":"de-DE,de;q=0.9,en-DE;q=0.8,en-GB;q=0.7,en-US;q=0.6,en;q=0.5",
+                            "upgrade-insecure-requests":"1"
+                        },
+                        "referrer":"https://qis.dez.tu-dresden.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=user&type=0&category=menu.browse&startpage=portal.vm",
+                        "referrerPolicy":"no-referrer-when-downgrade",
+                        "body":null,
+                        "method":"GET",
+                        "mode":"cors"
+                    
+                    }) 
+                )
+            })
+            .then(resp => {
+                return resp.text()
             })
             .then(text => {
                 return cheerio.load(text)
@@ -230,42 +239,47 @@ export default class tud_fetch extends University {
             .then($ => {
                 //Extract number for Type of Graduation
                 let link = $('.regular').attr('href')
-                let graduation_id = link.slice(link.indexOf('Aabschl%') + 8, link.indexOf('Aabschl%') + 12)
+                graduation_id = link.slice(link.indexOf('Aabschl%') + 8, link.indexOf('Aabschl%') + 12)
                 //graduation_id examples: "3D11" (Diplom) or "3D28" (Bachelor)
                 return graduation_id
             })
             .then(graduation_id => {
-                //get link via scraping
-               fetch('https://qis.dez.tu-dresden.de/qisserver/rds?state=notenspiegelStudent&next=list.vm&nextdir=qispos/notenspiegel/student&createInfos=Y&struct=auswahlBaum&nodeID=auswahlBaum%7Cabschluss%3Aabschl%' + graduation_id + '%2Cstgnr%3D1&expand=1&asi=' + asi,
-                {
-                    'credentials':'same-origin',
-                    'headers':
+                //get page with grades
+                return(
+                    fetch('https://qis.dez.tu-dresden.de/qisserver/rds?state=notenspiegelStudent&next=list.vm&nextdir=qispos/notenspiegel/student&createInfos=Y&struct=auswahlBaum&nodeID=auswahlBaum%7Cabschluss%3Aabschl%' + graduation_id + '%2Cstgnr%3D1&expand=1&asi=' + asi,
                     {
-                        'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
-                        'accept-language':'de-DE,de;q=0.9,en-DE;q=0.8,en-GB;q=0.7,en-US;q=0.6,en;q=0.5',
-                        'save-data':'on',
-                        'sec-fetch-mode':'navigate',
-                        'sec-fetch-site':'same-origin',
-                        'sec-fetch-user':'?1',
-                        'upgrade-insecure-requests':'1'
-                    },
-                    'referrer':'https://qis.dez.tu-dresden.de/qisserver/rds?state=notenspiegelStudent&next=tree.vm&nextdir=qispos/notenspiegel/student&menuid=notenspiegelStudent&breadcrumb=notenKlassenSpiegel&breadCrumbSource=loggedin&asi=' + asi,
-                    'referrerPolicy':'no-referrer-when-downgrade',
-                    'body':null,
-                    'method':'GET',
-                    'mode':'cors'})
-                .then(resp => {
-                    //this contains the webpage with the grade-overview
-                    return resp.text();
-                })
-                .then(text => {
-                    //load into cheerio
-                    this.$ = cheerio.load(text);
-                    return;
-                })
-                .then(() => {
-                    //get tree view - this is required to get the studiengang
-                    fetch('https://qis.dez.tu-dresden.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet;jsessionid=F8BDF489296C45F3A2E934DB2A1DA7EF?state=notenspiegelStudent&struct=auswahlBaum&navigation=Y&next=tree.vm&nextdir=qispos/notenspiegel/student&nodeID=auswahlBaum%7Cabschluss%3Aabschl%' + graduation_id + '%2Cstgnr%3D1&expand=0&lastState=notenspiegelStudent&asi=' + asi,
+                         'credentials':'same-origin',
+                         'headers':
+                         {
+                             'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3',
+                             'accept-language':'de-DE,de;q=0.9,en-DE;q=0.8,en-GB;q=0.7,en-US;q=0.6,en;q=0.5',
+                             'save-data':'on',
+                             'sec-fetch-mode':'navigate',
+                             'sec-fetch-site':'same-origin',
+                             'sec-fetch-user':'?1',
+                             'upgrade-insecure-requests':'1'
+                         },
+                         'referrer':'https://qis.dez.tu-dresden.de/qisserver/rds?state=notenspiegelStudent&next=tree.vm&nextdir=qispos/notenspiegel/student&menuid=notenspiegelStudent&breadcrumb=notenKlassenSpiegel&breadCrumbSource=loggedin&asi=' + asi,
+                         'referrerPolicy':'no-referrer-when-downgrade',
+                         'body':null,
+                         'method':'GET',
+                         'mode':'cors'
+                    })
+                )
+            })
+            .then(resp => {
+                //this contains the webpage with the grade-overview
+                return resp.text();
+            })
+            .then(text => {
+                //load into cheerio
+                this.$ = cheerio.load(text);
+                return;
+            })
+            .then(() => {
+                //get page with tree view - this is required to get the studiengang
+                return(
+                    fetch('https://qis.dez.tu-dresden.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=notenspiegelStudent&struct=auswahlBaum&navigation=Y&next=tree.vm&nextdir=qispos/notenspiegel/student&nodeID=auswahlBaum%7Cabschluss%3Aabschl%' + graduation_id + '%2Cstgnr%3D1&expand=0&lastState=notenspiegelStudent&asi=' + asi + '#auswahlBaum%7Cabschluss%3Aabschl%' + graduation_id + '%2Cstgnr%3D1',
                     {
                         'credentials':'same-origin',
                         'headers':
@@ -282,22 +296,28 @@ export default class tud_fetch extends University {
                         'referrerPolicy':'no-referrer-when-downgrade',
                         'body':null,
                         'method':'GET',
-                        'mode':'cors'})
-                    .then(resp => {
-                        return resp.text()
+                        'mode':'cors'
                     })
-                    .then(text => {
-                        //this contains the tree view
-                        this.$treeView = cheerio.load(text)
-                        return
-                    }).then(() => {
-                        resolve();
-                    }).catch(e => reject('Error0 in Fetch in tu_dresden: ' + e))
-                }).then(() => {
-                    this.logout(asi)
-                }).catch(e => reject('Error1 in Fetch in tu_dresden: ' + e))
-            }).catch(e => reject('Error2 in Fetch in tu_dresden: ' + e));
-            }).catch(e => reject('Error3 in Fetch in tu_dresden: ' + e));
+                )
+                })
+            .then(resp => {
+                return resp.text()
+            })
+            .then(text => {
+                //this contains the tree view where the studiengang is listed
+                this.$treeView = cheerio.load(text)
+                return
+            })
+            .then(() => {
+                resolve();
+            })
+            .then(() => {
+                this.logout(asi)
+            })
+            .catch(e => {
+                console.log('Error in fetching from hisqis: ' + e)
+                reject('Error in fetching from hisqis: ' + e)
+            })
         })
     }
 }
