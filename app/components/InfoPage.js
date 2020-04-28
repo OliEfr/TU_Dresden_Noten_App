@@ -42,6 +42,7 @@ class InfoPage extends React.Component {
         <Text style={[styles.greyTextSmall,{fontStyle: 'italic'}]}>{'\n'}More coming soon !</Text>
         <Text style={[styles.greyTextSmall,{}]}>{'\n'}Fragen, Feedback, Mitmachen?{'\n'}</Text>
         <Button 
+          color="#4a96bf"
           onPress={() => Linking.openURL('mailto:ollidev97@gmail.com?subject=GradeRace Contact') }
           title="Kontakt" />
         <Text style={[styles.linkText,{}]}

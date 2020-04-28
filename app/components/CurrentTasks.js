@@ -41,6 +41,7 @@ class CurrentTasks extends React.Component {
         <Text style={[styles.greyTextSmall,{}]}>Upcoming ToDo meinerseits:</Text>
         <Text style={[styles.IdeaText,{}]}>UI-Rework{'\n'}Feature: Lernziele setzen{'\n'}iOS implementation{'\n'}</Text>
         <Button 
+          color="#4a96bf"
           onPress={() => Linking.openURL('mailto:ollidev97@gmail.com?subject=GradeRace Development') }
           title="E-Mail senden" />
       </ScrollView>

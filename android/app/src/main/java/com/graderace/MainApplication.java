@@ -51,17 +51,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
   public void onCreate() {
     super.onCreate();
     
-    /*for REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
-      Intent intent = new Intent();
-      String packageName = getPackageName();
-      PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
-      if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-          intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-          intent.setData(Uri.parse("package:" + packageName));
-          startActivity(intent);
-      }
-    //*/
-   
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
 

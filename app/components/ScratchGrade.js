@@ -133,6 +133,7 @@ class ScratchGrade extends React.Component {
                 </View>
                 <Text style={[styles.orangeTextSmall,{marginHorizontal: 20}]}>{this.state.text}</Text>
                 <Button
+                    color="#4a96bf"
                     title="Weiter"
                     disabled={this.state.ButtonDisabled}
                     onPress={ async () => {

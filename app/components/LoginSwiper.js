@@ -11,7 +11,7 @@ import {
   TextInput,
   Button,
   Linking,
-  StyleSheet,
+  StyleSheet
 } from 'react-native';
 
 //3rd-party packages
@@ -84,7 +84,7 @@ export default class FlexDirectionBasics extends Component {
       return (
         <View>
           <Text style={[styles.blueTextSmall, ]}>Starte durch, mit{'\n'}</Text>
-          <Text style={[styles.orangeTextBold,]}>GradeRace</Text>
+          <Text style={[styles.orangeTextBold ,{color: '#4a96bf' }]}>Grade<Text style={styles.orangeTextBold}>Race</Text></Text>
         </View>
       );
     }
@@ -123,9 +123,9 @@ export default class FlexDirectionBasics extends Component {
             {(() => {
               switch (this.state.myUniversity) {
                 case 'TU Dresden':
-                  return 'Jetzt logge dich mit deinem TU Dresden\nLogin ein:';
+                  return 'Logge dich mit deinem TU Dresden\nLogin ein:';
                 default:
-                  return 'Jetzt logge dich mit deinem Uni Login ein:\n';
+                  return 'Logge dich mit deinem Uni Login ein:\n';
               }
             })()}
           </Text>

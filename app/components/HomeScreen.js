@@ -374,6 +374,7 @@ class HomeScreen extends React.Component {
           }
           {<View style={{marginHorizontal: 60, marginVertical: 20}}>
             <Button
+              color="#4a96bf"
               title="App zurücksetzten"
               onPress={() => utils.reset()}/></View>}
           {/*<View style={{marginHorizontal: 60, marginVertical: 20}}>

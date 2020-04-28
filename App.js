@@ -9,6 +9,7 @@ import ScratchGrade from './app/components/ScratchGrade';
 import CurrentTasks from './app/components/CurrentTasks';
 import InfoPage from './app/components/InfoPage';
 import SetNewGoals from './app/components/SetNewGoal';
+import GetBatteryOptimizationPermission from './app/components/GetBatteryOptimizationPermission';
 
 //using react naivgation to manage screens
 const AppNavigator = createStackNavigator({
@@ -26,6 +27,9 @@ const AppNavigator = createStackNavigator({
   },
   SetGoals: {
     screen: SetNewGoals,
+  },
+  GetBatteryOptimizationPermission: {
+    screen: GetBatteryOptimizationPermission,
   }
 },
 {
