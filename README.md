@@ -73,6 +73,7 @@ All related files can be found in /app.
   - **SetGoalList.js**: Component, containing a list of subjects where the user can set goals. Used in SetNewGoal.js.
   - **SetNewGoal.js**: Screen, where the user can set new goals. 
   - **InfoPage.js**: A Info page for the user which is displayed when the user presses the i-Icon in HomeScreen at the top right.
+  - **GetBatteryOptimizationPermission**: Screen to get disable battery optimization. Shown on Login after setgoal.
 - **app/fetch_utils**: this files handle direct http-communication with hisqis. In the future, more universities should be supported. All of them inherit from university.js.
 - **app/utils**: other utils
   - **ExamDetailsClass.js**: Used in GradeDetails.js for some calculations
@@ -169,4 +170,6 @@ And then run the command above (see One-Time Solution).
 - requires "util", "stream" and "buffer" dependencies
 - for using cheerio in RN (i.e. webscraping)
 
+#### react-native-send-intent
+- used to show battery optimization settings page
   
