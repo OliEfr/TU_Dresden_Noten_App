@@ -340,13 +340,13 @@ export default class FlexDirectionBasics extends Component {
     this.state.grades_json = await my_uni.getGrades();
 
     //get studiengang
-    this.setState({myStudiengang: await my_uni.getStudiengang()})
+    this.setState({myStudiengang: studiengang})
 
     //store everything
     storage._storeData('grades_json', JSON.stringify(this.state.grades_json));
     storage._storeData('grades_list', JSON.stringify(my_uni.getGradesList()));
     storage._storeData('university', this.state.myUniversity);
-    storage._storeData('studiengang', await my_uni.getStudiengang());
+    storage._storeData('studiengang', studiengang);
     storage._storeData('new_grade', JSON.stringify({list: []}));
     
     //get avarage grade for scratch later
