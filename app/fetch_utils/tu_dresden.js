@@ -52,7 +52,7 @@ export default class tud_fetch extends University {
         return new Promise((resolve, reject) => {
             this.fetch()
             .then(() => this.parseGrades())
-            .then(()=>{ resolve(this.grades)})
+            .then(()=> resolve(this.grades))
             .catch(e=> {reject(e)})
         })
     }
@@ -198,13 +198,13 @@ export default class tud_fetch extends University {
                 'method':'POST',
                 'mode':'cors',
             })
-            .then(resp => {
+            .then(async (resp) => {
                 //get html content
-                return resp.text();
+                return await resp.text();
             })
-            .then(text => {
+            .then(async (text) => {
                 //load into cheerio
-                return cheerio.load(text);
+                return await cheerio.load(text);
             })
             .then($ => {
                 //extracting asi
@@ -230,11 +230,11 @@ export default class tud_fetch extends University {
                     }) 
                 )
             })
-            .then(resp => {
-                return resp.text()
+            .then(async (resp) => {
+                return await resp.text()
             })
-            .then(text => {
-                return cheerio.load(text)
+            .then(async (text) => {
+                return await cheerio.load(text)
             })
             .then($ => {
                 //Extract number for Type of Graduation
@@ -267,13 +267,13 @@ export default class tud_fetch extends University {
                     })
                 )
             })
-            .then(resp => {
+            .then(async (resp) => {
                 //this contains the webpage with the grade-overview
-                return resp.text();
+                return await resp.text();
             })
-            .then(text => {
+            .then(async (text) => {
                 //load into cheerio
-                this.$ = cheerio.load(text);
+                this.$ = await cheerio.load(text);
                 return;
             })
             .then(() => {
@@ -300,19 +300,19 @@ export default class tud_fetch extends University {
                     })
                 )
                 })
-            .then(resp => {
-                return resp.text()
+            .then(async (resp) => {
+                return await resp.text()
             })
-            .then(text => {
+            .then(async (text) => {
                 //this contains the tree view where the studiengang is listed
-                this.$treeView = cheerio.load(text)
+                this.$treeView = await cheerio.load(text)
                 return
             })
             .then(() => {
-                resolve();
+                this.logout(asi)
             })
             .then(() => {
-                this.logout(asi)
+                resolve(true)
             })
             .catch(e => {
                 console.log('Error in fetching from hisqis: ' + e)

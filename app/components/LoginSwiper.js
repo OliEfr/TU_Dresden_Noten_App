@@ -329,12 +329,12 @@ export default class FlexDirectionBasics extends Component {
     //store login_data (encrypted)
     // eslint-disable-next-line prettier/prettier
     storage.create_credentials(this.state.myLoginData.username, this.state.myLoginData.username,)
-      .then(() => {
-        storage._storeDataEncrypted(
-          'login_data',
-          JSON.stringify(this.state.myLoginData),
-        );
-      });
+    .then(() => {
+      storage._storeDataEncrypted(
+        'login_data',
+        JSON.stringify(this.state.myLoginData),
+      );
+    });
 
     //get grades
     this.state.grades_json = await my_uni.getGrades();
