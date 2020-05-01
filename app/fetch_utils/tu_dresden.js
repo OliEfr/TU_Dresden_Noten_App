@@ -81,8 +81,7 @@ export default class tud_fetch extends University {
                 let isModule = false;
 
                 //reaons to skip
-                if (exam === '') {return true;}
-                if ($(this).children().eq(1).attr('bgcolor') === '#ADADAD') {return true}
+                //if (exam === '' || exam === 'Gesamtnote Zwischenprüfung') {return true}
 
                 //Extract information and store in this.grades
                 if ($(this).children().eq(1).attr('class') === 'normalFett') {
@@ -98,15 +97,24 @@ export default class tud_fetch extends University {
                                         });
                 } else {
                     //Fach
-                    if (exam === 'Gesamtnote Zwischenprüfung') {
-                        return true;
-                    }
+                    try {
                     that.grades.modules[that.grades.modules.length - 1].subjects.push({
                                                                         'name': exam,
                                                                         'mark': grade,
                                                                         'year': year,
                                                                         'status': status
-                                                                         });
+                                                                         })
+                    } catch {
+                        //catch if no module yet
+                        that.grades.modules.push({
+                            'module_name': exam,
+                            'module_mark': grade,
+                            'status': status,
+                            'cp': cp,
+                            'subjects':[],
+                            'year': year,
+                            })
+                    }
                 }
                 //check for change and store in newGradesList.
                 //exam+year is done to create a unique identifier
@@ -114,8 +122,10 @@ export default class tud_fetch extends University {
                 if (that.gradesList[exam + year] === undefined ||
                     that.gradesList[exam + year]['year'] === undefined ||
                     that.gradesList[exam + year]['grade'] !== grade) {
-                        that.gradesList[exam + year] = {name: exam, year: year, grade: grade, isModule: isModule};
-                        that.newGradesList[exam + year] = {name: exam, year: year, grade: grade, isModule: isModule};
+                        that.gradesList[exam + year] = {name: exam, year: year, grade: grade, isModule: isModule, status: status};
+                        if(!(status = 'bestanden')) {
+                            that.newGradesList[exam + year] = {name: exam, year: year, grade: grade, isModule: isModule};
+                        }
                 }
             });
             resolve(true);
@@ -136,7 +146,7 @@ export default class tud_fetch extends University {
             //There are two options to get the studiengang
             try {
                 this.studiengang = this.$treeView('#visual-portal-wrapper').children('form').children('ul').children().first().children('ul').text().trim().split(" ")[0]
-                if(this.studiengang === "") {throw 'Empty studiengang.'}
+                if(this.studiengang === "" || this.studiengang === null) {throw 'Empty studiengang.'}
             } catch(error) {
                 console.log('Could not get studiengang first try: ' + error)
                 try {
@@ -274,7 +284,7 @@ export default class tud_fetch extends University {
             .then(async (text) => {
                 //load into cheerio
                 this.$ = await cheerio.load(text);
-                return;
+                return
             })
             .then(() => {
                 //get page with tree view - this is required to get the studiengang
@@ -310,6 +320,7 @@ export default class tud_fetch extends University {
             })
             .then(() => {
                 this.logout(asi)
+                return
             })
             .then(() => {
                 resolve(true)

@@ -13,8 +13,8 @@
   this datatype is used to perform logic operations, e.g. check whether there is a new grade.
     
     const dataList = {
-      exam1SoSe 19 : {name: exam1, year: SoSe 19, grade: 1.0};
-      exam2SoSe 19 : {name: exam2, year: SoSe 19, grade: 1.0};
+      exam1SoSe 19 : {name: exam1, year: SoSe 19, grade: 1.0, isModule: true};
+      exam2SoSe 19 : {name: exam2, year: SoSe 19, grade: 1.0, isModule: false};
     }
 */
 

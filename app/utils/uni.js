@@ -85,12 +85,13 @@ export default class Uni {
         /* 
             return type:
                 [Exam1, Exam2, Exam3 ...]
+            Note: Does only return exam - not module
         */
        let examList = [];
         return new Promise((resolve,reject) => {
             if (Object.keys(this.uni.newGradesList).length > 0 ) {
                 for (var key in this.uni.newGradesList) {
-                    if (this.uni.newGradesList[key]['grade'] === '') {
+                    if (this.uni.newGradesList[key]['grade'] === '' && this.uni.newGradesList[key]['isModule'] === false) {
                         examList.push(this.uni.newGradesList[key]['name'])
                     }
                 }

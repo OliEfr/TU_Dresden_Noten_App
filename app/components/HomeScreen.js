@@ -282,7 +282,7 @@ class HomeScreen extends React.Component {
     } else {
       //ask for final goal if not set yet
       if ((this.state.finalGoal === undefined || this.state.finalGoal === '' || this.state.finalGoal === null)) {
-        this.props.navigation.navigate('SetGoals', {list:['Abschlussnote']})
+        this.props.navigation.replace('SetGoals', {list:['Abschlussnote']})
       }
       //goto ScratchGrade if new grade
       if (!(this.state.newGrade === undefined || this.state.newGrade === '' || this.state.newGrade === null)) {

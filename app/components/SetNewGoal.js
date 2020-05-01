@@ -87,15 +87,15 @@ class SetNewGoal extends React.Component {
                 if(Object.keys(this.state.new_goals)[0] === "Abschlussnote") {
                   await storage._storeData('final_goal', JSON.stringify(this.state.new_goals['Abschlussnote']));
                 } else {
-                //save to async storage
+                //save else
                   await storage._retrieveData('new_goals').then((string) => {return JSON.parse(string)})
-                    .then((new_grade_json) => {
+                    .then(async (new_grade_json) => {
                       if(typeof new_grade_json === 'object' && new_grade_json !== null) {
                         Object.keys(this.state.new_goals).forEach(key => new_grade_json[key] = this.state.new_goals[key])
                       } else {
                         new_grade_json = this.state.new_goals
                       }
-                      storage._storeData('new_goals', JSON.stringify(new_grade_json));
+                      await storage._storeData('new_goals', JSON.stringify(new_grade_json));
                   });
                   await storage._storeData('new_exam', '');
                 }
