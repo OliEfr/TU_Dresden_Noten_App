@@ -1,9 +1,6 @@
 /* eslint-disable react/no-did-mount-set-state */
 /* eslint-disable react-native/no-inline-styles */
 
-//Get BatteryOptimization Settings Permission
-//The user sees this page once on setup after setting final grade goal
-
 import React from 'react';
 import {Text, StyleSheet, Button, View} from 'react-native';
 
@@ -11,6 +8,11 @@ import {Text, StyleSheet, Button, View} from 'react-native';
 import {withNavigation} from 'react-navigation';
 //import AndroidOpenSettings from 'react-native-android-open-settings'
 var SendIntentAndroid = require("react-native-send-intent");
+
+/*
+  Get BatteryOptimization Settings Permission
+  The user sees this page once on setup after setting final grade goal
+*/
 
 class InfoPage extends React.Component {
   constructor(props) {
@@ -22,8 +24,7 @@ class InfoPage extends React.Component {
   }
 
   static navigationOptions = ({navigation}) => {
-    return {
-      title: 'Meine Ziele', 
+    return { 
       header: null,
       navigationOptions: {
         headershown: false,

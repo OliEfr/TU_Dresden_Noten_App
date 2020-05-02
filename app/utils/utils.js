@@ -5,7 +5,9 @@ import {Alert} from 'react-native';
 import * as storage from '../utils/storage';
 import * as init from '../init';
 
-//some utils
+/*
+  some utils
+*/
 
 //reset app = local storage
 const reset = async() => {

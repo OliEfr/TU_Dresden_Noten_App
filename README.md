@@ -13,7 +13,6 @@ Contact: ollidev97@gmail.com
 - Looking for contributors.
 
 ## Feedback / Bugs
-
 - 0011 in der Notenübersicht-Chart entfernen
 - Icon bei Push-Notification nicht angezeigt. >> TROUBLES
 - Screen-Transition : Horizontal. See react-navigation docs! >> TROUBLES
@@ -25,9 +24,6 @@ Contact: ollidev97@gmail.com
 - Notenspiegel Front- und Backend
 - support selma und jexam
 - make available for iOS
-
-## Contributors
-currently only me
 
 ## ToDo, on releasing new version (only for OliEfr)
 - change internal_version in HomeScreen.js
@@ -59,7 +55,7 @@ This represents the data contained in the local AsyncStorage on the phone.
 ### Filesystem
 index.js is entry point for the app. It also registers the background task. The screens are managed in App.js
 
-All related files can be found in /app.
+All files can be found in /app.
 
 - **Colors.js**: in the future, this file should contain all user colors
 - **init.js**: functions, which are performed on app start: register push-notification, register background-task.
@@ -76,7 +72,6 @@ All related files can be found in /app.
   - **GetBatteryOptimizationPermission**: Screen to get disable battery optimization. Shown on Login after setgoal.
 - **app/fetch_utils**: this files handle direct http-communication with hisqis. In the future, more universities should be supported. All of them inherit from university.js.
 - **app/utils**: other utils
-  - **ExamDetailsClass.js**: Used in GradeDetails.js for some calculations
   - **ExamListClass.js**: Used in GradesList.js to show chart
   - **storage.js**: for interaction with local storage
   - **uni.js**: this class puts an level of abstraction on the users raw data obtained by the fetch_utils.
@@ -148,7 +143,7 @@ And then run the command above (see One-Time Solution).
   **Note**: if you run "npm install" these packages will be installed already. 
         This list is just to keep track of the 3rd-party packages and list particularities.
         This list in *uncomplete* !
-        Only packages effecting the whole app framework are listed.
+        Only packages effecting the whole framework are listed.
         
 #### react-navigation
 - used to manage screens
@@ -168,8 +163,10 @@ And then run the command above (see One-Time Solution).
 
 #### cheerio-without-node-native
 - requires "util", "stream" and "buffer" dependencies
-- for using cheerio in RN (i.e. webscraping)
+- for using cheerio
 
 #### react-native-send-intent
 - used to show battery optimization settings page
   
+#### lottie animation
+- some neat animations

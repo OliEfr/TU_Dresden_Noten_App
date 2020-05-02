@@ -1,8 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-
-//The user sees this screens on first login
-//The login screens contain a walkthrough and the user is required to put in login credentials
-
 import React, {Component} from 'react';
 import {
   View,
@@ -25,6 +21,11 @@ import Uni from '../utils/uni';
 import * as utils from '../utils/utils';
 import GradeList from '../utils/ExamListClass';
 import LottieView from 'lottie-react-native';
+
+/*
+  The user sees this screens on first login
+  The login screens contain a walkthrough and the user is required to put in login credentials
+*/
 
 export default class FlexDirectionBasics extends Component {
   constructor(props) {
@@ -49,7 +50,6 @@ export default class FlexDirectionBasics extends Component {
   }
 
   onScratchDone = ({ isScratchDone, id }) => {
-    // Do something
     this.setState({disableButton: false})
     this.setState({renderAnimation: true})
     this.congrats_animation.play()
@@ -57,9 +57,6 @@ export default class FlexDirectionBasics extends Component {
   }
 
   onScratchTouchStateChanged = ({ id, touchState }) => {
-      // Example: change a state value to stop a containing
-      // FlatList from scrolling while scratching
-      this.setState({ scrollEnabled: !touchState });
   }
 
   renderContent = () => {
@@ -170,16 +167,8 @@ export default class FlexDirectionBasics extends Component {
               this.setState({myLoginData: saveState});
             }}
           />
-          <Text style={[styles.blueTextSmall, {fontSize: 15}]}>
-            {this.state.myLoginErrorMsg}
-          </Text>
+          <Text style={[styles.blueTextSmall, {fontSize: 15}]}>{this.state.myLoginErrorMsg}</Text>
           <Text style={[styles.blueTextSmall, {fontSize: 18, marginHorizontal: 20}]}>Nur lokal und verschlüsselt gespeichert.</Text>
-          {/*<ActivityIndicator
-            size="large"
-            color="#f06449"
-            style={{margin:20}}
-            animating={this.state.isLoading}
-          />*/}
         </View>
       );
      
@@ -221,7 +210,7 @@ export default class FlexDirectionBasics extends Component {
 
   };
 
-  //Action of Button-Press depends on current screen
+  //Action of Button-Press and Button-Text depends on current screen
   buttonAction = async () => {
     if (this.state.IntroScreenNr === 0){
       this.gotoNextScreen()
@@ -256,6 +245,7 @@ export default class FlexDirectionBasics extends Component {
   }
 
   submit_login = async () => {
+    //username and pw is required
     if (
       this.state.myLoginData.password === '' ||
       this.state.myLoginData.username === ''
@@ -276,15 +266,16 @@ export default class FlexDirectionBasics extends Component {
     );
     this.setState({my_uni: my_uni});
 
+    //check if hisqis reachable
     if(!(await utils.hisqis_reachable())) {
-      //alert is promted in utils.hisqis_reachable!
+      //alert is promted in utils.hisqis_reachable
       this.setState({isLoading: false});
       this.setState({disableButton: false})
       return;
     }
 
     //fetch name
-      //name will be undefined if error is catched
+    //name will be undefined if error is catched in fetch-function
     var name = await my_uni.getName().catch(e => {
       this.setState({myLoginErrorMsg: 'Fehler: Bitte überprüfe deine Login Daten!'});
       this.setState({isLoading: false});
@@ -327,7 +318,6 @@ export default class FlexDirectionBasics extends Component {
     }
 
     //store login_data (encrypted)
-    // eslint-disable-next-line prettier/prettier
     storage.create_credentials(this.state.myLoginData.username, this.state.myLoginData.username,)
     .then(() => {
       storage._storeDataEncrypted(
@@ -413,7 +403,6 @@ export default class FlexDirectionBasics extends Component {
   }
 
   render() {
-
     //step indicator styles
     const customStyles = {
       stepIndicatorSize: 25,

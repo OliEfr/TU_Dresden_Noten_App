@@ -4,6 +4,7 @@
 
 /* 
   Base-Class for all university fetch classes
+  In the future, this can be implemented for multiple universities
 */
 
 /*

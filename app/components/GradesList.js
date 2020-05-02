@@ -1,13 +1,14 @@
 /* eslint-disable prettier/prettier */
-
-//This file contains a component for the list overview of the users grades
-//It is visible in Home Screen
-
 import React from 'react';
 import {View, TouchableOpacity, Text, FlatList, StyleSheet, Alert, Dimensions} from 'react-native';
 import {Colors} from '../Colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { withNavigation } from 'react-navigation';
+
+/*
+  This file contains a component for the list overview of the users grades
+  It is visible in Home Screen
+*/
 
 class GradesList extends React.Component {
   constructor(props) {
@@ -27,7 +28,6 @@ class GradesList extends React.Component {
   };
 
   render() {
-    
     return (
       <View>
         <TouchableOpacity
@@ -36,12 +36,8 @@ class GradesList extends React.Component {
             if (this.state.subjects.length === 0 && this.props.status != 'bestanden') {Alert.alert('Info','Ich benachrichtige dich, sobald die Note da ist!')}
             this.toggleExpand()
           }}>
-          <Text numberOfLines={this.state.listNumerOfLines} style={[styles.title, {flex:10, marginRight: 10}]}>
-                {this.props.module_name}
-          </Text>
-          <Text style={[styles.mark, {flex:2}]}>
-            {this.props.module_mark}
-          </Text>
+          <Text numberOfLines={this.state.listNumerOfLines} style={[styles.title, {flex:10, marginRight: 10}]}>{this.props.module_name}</Text>
+          <Text style={[styles.mark, {flex:2}]}>{this.props.module_mark}</Text>
           <Icon
             name={(() => {
               if (this.props.status === 'bestanden') return 'check-circle';
@@ -82,9 +78,7 @@ class GradesList extends React.Component {
                   <TouchableOpacity
                     style={[styles.childRow, styles.button]}
                     onPress={() => Alert.alert('Bleib gespannt!','Zukünftig kannst du hier Notenspiegel sehen.')}>
-                    <Text numberOfLines={1} style={[styles.itemInActive, {flex: 10, marginRight: 10}]}>
-                        {item.name}
-                    </Text>
+                    <Text numberOfLines={1} style={[styles.itemInActive, {flex: 10, marginRight: 10}]}>{item.name}</Text>
                     <Text style={[styles.marksmall, {flex: 1.4}]}>{item.mark}</Text>
                     <Icon
                       name={(() => {
@@ -101,12 +95,12 @@ class GradesList extends React.Component {
                         return Colors.YELLOW;
                       })()}
                     />
-                    {<Icon
+                    <Icon
                       name='keyboard-arrow-right'
                       size={20}
                       style={{flex:0, marginHorizontal: 5}}
                       color={Colors.DARKGRAY}
-                    />}
+                    />
                   </TouchableOpacity>
                   <View style={styles.childHr} />
                 </View>

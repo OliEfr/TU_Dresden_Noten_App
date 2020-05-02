@@ -8,7 +8,7 @@ import * as storage from './utils/storage';
 //This file is used to define and initialize the background task
 
 
-//see git hub repo from react-native-push-notification for further information
+//see react-native-push-notification github-repo for further information
 const init_push_notification = () => {
   PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
@@ -64,18 +64,18 @@ const send_push_notification = (_title, _message) => {
   });
 };
 
-//background task which should be performed
+//background task
 const background_task = async() => {
   return new Promise(async (resolve, reject) => {
   console.log('Triggered Background Task @' + new Date().toLocaleString());
   
-  //get user data from storage
+  //get the user's login data from storage
   await storage._retrieveDataEncrypted('login_data').then(login_data_string => {
     return JSON.parse(login_data_string);
   }).then(async (login_data_json) => {
     var my_uni = new Uni(login_data_json.username, login_data_json.password, await JSON.parse(await storage._retrieveData('grades_list')), await storage._retrieveData('university') );
     
-    //fetch data from hisqis (i.e. user grades)
+    //fetch data from hisqis (user grades)
     my_uni.getGrades().then(async() => {
       if (my_uni.hasChanged()) {
         //save to storage
@@ -90,31 +90,28 @@ const background_task = async() => {
         send_push_notification('Neute Noten!', 'Neue Noten in ' + my_uni.getFirstNewSubjectName() + ' und mehr ..');
       }
 
-      //ToDo: Wenn mehrere Noten auf einmal raus kommen!
-      //store information in AsynStorage
+      //store information about new grades
       if (newGradeCount > 0) {
-        //TODO: do the following only, if new grade is exam
         await storage._retrieveData('new_grade').then((string) => JSON.parse(string))
           .then(async (new_grades) => {
-            //await new_grades.list.push({subjectName: my_uni.getFirstNewSubjectName(), subjectYear: my_uni.getFirstNewSubjectYear(), subjectMark: my_uni.getFirstNewSubjectGrade()})
             let concat_new_grades = await new_grades.list.concat(my_uni.getNewGradesInformation())
             await storage._storeData('new_grade', JSON.stringify({list: concat_new_grades}));
         });
       }
 
-      //push notificationa and store data if user enrolled for new exam
+      //send push notification on enrolled for new exam
       let new_exams = await my_uni.enrolledNewExam()
       if (new_exams !== false) {
         send_push_notification('Neue Prüfung angemeldet', 'Setze dir jetzt Ziele!');
         storage._storeData('new_exam', JSON.stringify({list: new_exams}));
       }
-      
-      console.log('Finished background task.')
-      //resolves for manually triggering bg-task
+
+      console.log('Finished background task @' + new Date().toLocaleString())
+
+      //resolve for manually triggering bg-task in home-screen
       if (newGradeCount > 0) {resolve('got_new_grade')}
       if (new_exams !== false) {resolve('got_new_exam')}
-      resolve();
-      
+      resolve()
     })
     .catch(e => reject(e));
   })

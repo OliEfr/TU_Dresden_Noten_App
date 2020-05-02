@@ -1,17 +1,17 @@
 /* eslint-disable react/no-did-mount-set-state */
 /* eslint-disable react-native/no-inline-styles */
-
-//This is a info page of the app
-//The user sees the page on clicking on the "i"-Icon
-//Here goes updates notes!
-
 import React from 'react';
 import {ScrollView, Text, StyleSheet, Button, Linking} from 'react-native';
 
 //import 3rd party packages
 import {withNavigation} from 'react-navigation';
 
-//import secondary files
+/*
+  This is a info page of the app
+  The user sees the page on clicking on the "i"-Icon
+  Here goes updates notes!
+*/
+
 
 class InfoPage extends React.Component {
   constructor(props) {
@@ -32,7 +32,6 @@ class InfoPage extends React.Component {
   }
 
   render() {
-
     return (
       <ScrollView style={{flex: 1, margin: 30}}>
         <Text style={[styles.greyTextSmall,{}]}>Diese App ist ein studentisches Projekt und soll zeigen, wie Digitalisierung aussehen kann.{'\n'}</Text>

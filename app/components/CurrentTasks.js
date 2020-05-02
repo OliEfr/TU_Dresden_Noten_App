@@ -1,16 +1,16 @@
 /* eslint-disable react/no-did-mount-set-state */
 /* eslint-disable react-native/no-inline-styles */
-
-//This screen is display to the user, when the users presses "Aktuelle Aufgaben / TODO"
-//It is for information purposes only
-
 import React from 'react';
 import {ScrollView, Button, Text, StyleSheet, Linking} from 'react-native';
 
 //import 3rd party packages
 import {withNavigation} from 'react-navigation';
 
-//import secondary files
+
+/*
+  This screen is display to the user, when the users presses "Aktuelle Aufgaben / TODO"
+  It is for information purposes only
+*/
 
 class CurrentTasks extends React.Component {
   constructor(props) {
@@ -27,7 +27,6 @@ class CurrentTasks extends React.Component {
   };
 
   async componentDidMount() {
-
   }
 
   render() {

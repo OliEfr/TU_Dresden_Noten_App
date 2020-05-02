@@ -4,20 +4,9 @@ const cheerio = require('cheerio-without-node-native');
 global.Buffer = require('buffer').Buffer;
 import University from './university';
 
-//This claas directly handles http-traffic with hisqis
 
-/* TODO
-    Für mehrere Studiengänge (TODO)
-     - For each list item --> Goto --> Link --> perform json crawl.
-    
-    Nicht bestandene Prüfungen berücksichtigen
-    
-    
-    Wie siehts es bei Bachelor-Master aus?
-    
-     ERROR-catching:
-      - wenn vor dem ersten Modul schon Noten stehen (zB Zwischenprüfung)
-    
+/*
+    This class directly handles http-traffic with hisqis  
 */
 
 export default class tud_fetch extends University {
@@ -35,6 +24,7 @@ export default class tud_fetch extends University {
         });
     }
 
+    //you need to to fetch() before using this function, e.g. bei calling getName()
     getStudiengang(){
         return new Promise((resolve, reject) => {
             //this.fetch().then(()=> {
@@ -61,7 +51,6 @@ export default class tud_fetch extends University {
     parseGrades(){
         return new Promise(async(resolve,reject) => {
             //this must be assigned to that, because jQuery (and cheerio) .each() function has its own scope
-                //didnt get it to work with .bind()
             var that = this;
             var $ = this.$;
 
@@ -79,9 +68,6 @@ export default class tud_fetch extends University {
                 let status = $(this).children().eq(5).text().trim();
                 let cp = $(this).children().eq(7).text().trim()
                 let isModule = false;
-
-                //reaons to skip
-                //if (exam === '' || exam === 'Gesamtnote Zwischenprüfung') {return true}
 
                 //Extract information and store in this.grades
                 if ($(this).children().eq(1).attr('class') === 'normalFett') {
@@ -116,9 +102,9 @@ export default class tud_fetch extends University {
                             })
                     }
                 }
+
                 //check for change and store in newGradesList.
-                //exam+year is done to create a unique identifier
-                    //PROBLEM: Removed Grade not detected
+                //exam+year to create a unique identifier
                 if (that.gradesList[exam + year] === undefined ||
                     that.gradesList[exam + year]['year'] === undefined ||
                     that.gradesList[exam + year]['grade'] !== grade) {
@@ -136,14 +122,11 @@ export default class tud_fetch extends University {
     parseUserInfo(){
         return new Promise(async(resolve, reject) => {
             //this must be assigned to that, because jQuery (and cheerio) .each() function has its own scope
-                //didnt get it to work with .bind()
             var that = this;
             this.$("table[summary='Liste der Stammdaten des Studierenden'] > tbody").children().each(function() {
                 if (that.$(this).children().first().text() === 'Name des Studierenden:') {that.name = that.$(this).children().next().text();}
-                //for some reason Studiengang is not  always available here. See below for solution
-                //if (that.$(this).children().first().text().includes("Studiengang")) {that.studiengang = that.$(this).children().next().text();}
             });
-            //There are two options to get the studiengang
+            //There are two options to get the studiengang. One should work in any case
             try {
                 this.studiengang = this.$treeView('#visual-portal-wrapper').children('form').children('ul').children().first().children('ul').text().trim().split(" ")[0]
                 if(this.studiengang === "" || this.studiengang === null) {throw 'Empty studiengang.'}
@@ -185,12 +168,12 @@ export default class tud_fetch extends University {
         "mode":"cors"})
     }
     
-    //fetch html
-    //set credentials=same-origin required for automatic cookie-handlin
+    //fetch from hisqis
     fetch(){
         return new Promise((resolve, reject) => {
             let asi = ''
             let graduation_id =''
+            //login
             fetch('https://qis.dez.tu-dresden.de/qisserver/rds?state=user&type=1&category=auth.login&startpage=portal.vm',{
                 'credentials':'same-origin',
                 'headers':{
@@ -222,6 +205,7 @@ export default class tud_fetch extends University {
                 asi = link.split('asi=').pop();
                 return asi;
             })
+            //in hisqis
             .then(asi => {
                 return(
                     fetch("https://qis.dez.tu-dresden.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=notenspiegelStudent&next=tree.vm&nextdir=qispos/notenspiegel/student&menuid=notenspiegelStudent&breadcrumb=notenKlassenSpiegel&breadCrumbSource=loggedin&asi=" + asi, {
@@ -247,14 +231,14 @@ export default class tud_fetch extends University {
                 return await cheerio.load(text)
             })
             .then($ => {
-                //Extract number for Type of Graduation
+                //Extract number for type of Graduation
+                //graduation_id examples: "3D11" (Diplom) or "3D28" (Bachelor)
                 let link = $('.regular').attr('href')
                 graduation_id = link.slice(link.indexOf('Aabschl%') + 8, link.indexOf('Aabschl%') + 12)
-                //graduation_id examples: "3D11" (Diplom) or "3D28" (Bachelor)
                 return graduation_id
             })
+            // get grades
             .then(graduation_id => {
-                //get page with grades
                 return(
                     fetch('https://qis.dez.tu-dresden.de/qisserver/rds?state=notenspiegelStudent&next=list.vm&nextdir=qispos/notenspiegel/student&createInfos=Y&struct=auswahlBaum&nodeID=auswahlBaum%7Cabschluss%3Aabschl%' + graduation_id + '%2Cstgnr%3D1&expand=1&asi=' + asi,
                     {
@@ -278,16 +262,14 @@ export default class tud_fetch extends University {
                 )
             })
             .then(async (resp) => {
-                //this contains the webpage with the grade-overview
                 return await resp.text();
             })
             .then(async (text) => {
-                //load into cheerio
                 this.$ = await cheerio.load(text);
                 return
             })
+            //get page with tree view - this is required to get the studiengang
             .then(() => {
-                //get page with tree view - this is required to get the studiengang
                 return(
                     fetch('https://qis.dez.tu-dresden.de/qisserver/servlet/de.his.servlet.RequestDispatcherServlet?state=notenspiegelStudent&struct=auswahlBaum&navigation=Y&next=tree.vm&nextdir=qispos/notenspiegel/student&nodeID=auswahlBaum%7Cabschluss%3Aabschl%' + graduation_id + '%2Cstgnr%3D1&expand=0&lastState=notenspiegelStudent&asi=' + asi + '#auswahlBaum%7Cabschluss%3Aabschl%' + graduation_id + '%2Cstgnr%3D1',
                     {
@@ -314,7 +296,6 @@ export default class tud_fetch extends University {
                 return await resp.text()
             })
             .then(async (text) => {
-                //this contains the tree view where the studiengang is listed
                 this.$treeView = await cheerio.load(text)
                 return
             })

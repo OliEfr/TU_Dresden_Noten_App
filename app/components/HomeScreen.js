@@ -1,9 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-
-//This is the first component which is loaded when the users starts the app
-//Here is decided, which screen and components should be displayed to the user
-//For this, this file contains logic, as well as components
-
 import React from 'react';
 import {StyleSheet, View, Text, ScrollView, Button, Dimensions, Alert, ActivityIndicator, Linking} from 'react-native';
 
@@ -21,6 +16,12 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import * as init from '../init';
 import BackgroundFetch from 'react-native-background-fetch';
 import * as utils from '../utils/utils'
+
+/*
+  This is the first component which is loaded when the users starts the app
+  Here is decided, which screen and components should be displayed to the user
+  For this, this file contains logic, as well as components
+*/
 
 // USER VARIABLES
 const current_version = 16  //used to manage versions internally and trigger events on app-update
@@ -73,7 +74,7 @@ class HomeScreen extends React.Component {
     });
   }
 
-  //handler is required to get states of child components
+  //handler is required to get states of child components, espacially grades_json
   stateHandler = value => {
     this.setState({
       grades_json: value,
@@ -85,25 +86,27 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {    
     //initialize backgroud task ('headfull', for when the app is not terminated)
+    //see react-native-background-fetch for details
     BackgroundFetch.configure({
       minimumFetchInterval: 15,     // <-- minutes (15 is minimum allowed)
       // Android options
       forceAlarmManager: false,     // <-- Set true to bypass JobScheduler.
       stopOnTerminate: false,
       startOnBoot: true,
-      requiredNetworkType: BackgroundFetch.NETWORK_TYPE_ANY, // Default
+      requiredNetworkType: BackgroundFetch.NETWORK_TYPE_ANY,
       forceAlarmManager: false,
       enableHeadless: true
-    }, async (taskId) => {
-      await init.background_task()
-      BackgroundFetch.finish(taskId);
-    }, (error) => {
-      console.log("Background-Fetch Task failed to start: " + error);
+      }, 
+      async (taskId) => {
+        await init.background_task()
+        BackgroundFetch.finish(taskId);
+      }, (error) => {
+        console.log("Background-Fetch Task failed to start: " + error);
     });
    
     //read data from storage to decide, which screen to show to the user
     storage._retrieveData('alreadyLaunched').then(async value => {
-      //if user is not registered yet or app is launched first time
+      //if user is not registered yet or app is launched first time show login swiper
       if (value === null || value === 'false') {
         this.setState({firstLaunch: true});
         this.setState({newGrade: null});
@@ -112,7 +115,7 @@ class HomeScreen extends React.Component {
         //load new grade, to see whether there is a new grade
         storage._retrieveData('new_grade').then((string) => JSON.parse(string))
           .then((new_grade_json) => {
-            //store first element of this list
+            //only store first element
             this.setState({newGrade: new_grade_json.list[0]});
           });
         //load new exam, to see whether enrolled in new exam
@@ -133,10 +136,9 @@ class HomeScreen extends React.Component {
           return parseInt(string)
         })
         .then((version) => {
-          //if update, notify user and store new version and reset visit count
+          //if update, store new version and change color of info icon
           if (version < current_version || version === null) {
             storage._storeData('internal_version', current_version.toString())
-            storage._storeData('visit_counter', '0')
             //set color of info icon
             this.setState({InfoIconColor: '#ff0000'})
             this.setState({InfoIconSize: 30})
@@ -144,7 +146,7 @@ class HomeScreen extends React.Component {
           }
         })
 
-        //get visit counter and display message and ask for Feedback
+        //get visit counter and increase by one
         storage._retrieveData('visit_counter').then((string) => {
           if (string === null) return 0
           return parseInt(string)
@@ -152,19 +154,6 @@ class HomeScreen extends React.Component {
         .then((visit_counter) => {
           let current_visit = visit_counter + 1
           storage._storeData('visit_counter', current_visit.toString())
-          //if (current_visit === 7) {
-          //  Alert.alert(
-          //    'Danke!',
-          //    'Cool, dass du die App nutzt. Bitte sende uns jetzt kurz Feedback:',
-          //    [
-          //      {text: 'Feedback senden', onPress: () => {
-          //        Linking.openURL('mailto:ollidev97@gmail.com?subject=GradeRace Feedback&body=Bitte gib hier ein kurzes Feedback zur App. Was soll verbessert werden? Bekommst du Push-Benachrichtigungen? Was wünschst du dir für die Zukunft?')
-          //      },
-          //      }
-          //    ],
-          //    { cancelable: false }
-          //  )
-          //}
         })
 
         //prepare grade list for display in chart
@@ -174,53 +163,53 @@ class HomeScreen extends React.Component {
         await new Promise(r => setTimeout(r, 200));
         
         //load grade overview from storage
-        storage
-          ._retrieveData('grades_json')
-          .then(grades_json_string => {
-            return JSON.parse(grades_json_string);
-          })
-          .then(grades_json_json => {
-            this.setState({grades_json: grades_json_json});
-            this.setState({firstLaunch: false});
-          });
+        storage._retrieveData('grades_json')
+        .then(grades_json_string => {
+          return JSON.parse(grades_json_string);
+        })
+        .then(grades_json_json => {
+          this.setState({grades_json: grades_json_json});
+          this.setState({firstLaunch: false});
+        });
       }
     });
   }
 
   getCurrentGoals = () => {
-    storage._retrieveData('new_goals').
-      then(new_goals_string => {
-        return JSON.parse(new_goals_string)
-      })
-      .then(new_goals_json => {
-        let new_goals_concat = ''
-        if(typeof new_goals_json === 'object' && new_goals_json !== null) {
-          Object.keys(new_goals_json).forEach(key => {
-            new_goals_concat = new_goals_concat + key + ": " + (new_goals_json[key]).toFixed(1) + '\n'
-          })
-        }
-        this.setState({currentGoals: new_goals_concat})
-      })
+    storage._retrieveData('new_goals')
+    .then(new_goals_string => {
+      return JSON.parse(new_goals_string)
+    })
+    .then(new_goals_json => {
+      let new_goals_concat = ''
+      if(typeof new_goals_json === 'object' && new_goals_json !== null) {
+        Object.keys(new_goals_json).forEach(key => {
+          new_goals_concat = new_goals_concat + key + ": " + (new_goals_json[key]).toFixed(1) + '\n'
+        })
+      }
+      this.setState({currentGoals: new_goals_concat})
+    })
   }
 
   //prepare grade list for chart
   getGradeList = () => {
-    storage._retrieveData('grades_list').
-        then(grades_list_string => {
-          return JSON.parse(grades_list_string);
-        })
-        .then(grades_list_json => {
-          let myGradeList = new GradeList(grades_list_json);
-          const dataCopy = this.state.data;
-          dataCopy.datasets[0].data = myGradeList.gradesCountConverted;
-          this.setState({data: dataCopy});
-          this.setState({examsCount: myGradeList.examsCount})
-          this.setState({gradeAvarage: myGradeList.gradeAvarage})
+    storage._retrieveData('grades_list')
+    .then(grades_list_string => {
+      return JSON.parse(grades_list_string);
+    })
+    .then(grades_list_json => {
+      let myGradeList = new GradeList(grades_list_json);
+      const dataCopy = this.state.data;
+      dataCopy.datasets[0].data = myGradeList.gradesCountConverted;
+      this.setState({data: dataCopy});
+      this.setState({examsCount: myGradeList.examsCount})
+      this.setState({gradeAvarage: myGradeList.gradeAvarage})
     })
   }
 
   renderGradesList = () => {
     const items = [];
+    //create list with all grades
     for (var item of this.state.grades_json.modules) {
       items.push(
         <GradesList
@@ -235,8 +224,9 @@ class HomeScreen extends React.Component {
     if (items.length === 0) {
       items.push(
         <View style={{marginTop: 30, marginBottom: 40}}>
-          <Text style={[styles.orangeText, {fontSize: 25, lineHeight:25}]}>Du hast noch keine Noten.{'\n'}</Text>
-          <Text style={[styles.orangeText, {marginVertical: 10, fontSize: 20, lineHeight:20}]}>Ich benachrichtige dich, sobald du eine hast!</Text>
+          <Text style={[styles.orangeText, {fontSize: 25, lineHeight:25}]}>Du hast keine Noten im Hisqis.{'\n'}</Text>
+          <Text style={[styles.orangeText, {fontSize: 25, lineHeight:25}]}>Wir arbeiten zur Zeit an Selma!{'\n'}</Text>
+          <Text style={[styles.orangeText, {marginVertical: 10, fontSize: 20, lineHeight:20}]}>Ich benachrichtige dich, sobald neue Noten hast!</Text>
         </View>
       )
     }
@@ -302,16 +292,16 @@ class HomeScreen extends React.Component {
         <ScrollView style={{marginTop:20}} onLayout={this.onLayout}>
           <Text style={[styles.blueTextSmall, {marginVertical: 15}]}>Deine Notenübersicht</Text>
           <BarChart
-          style={{
-            borderRadius: 5,
-            alignItems: 'center',
-            marginBottom: 10
-          }}
-          data={this.state.data}
-          width={Dimensions.get('window').width - 25}
-          height={200}
-          chartConfig={chartConfig}/>
-          <View  style={{position: 'absolute', right: 0, top: 5}}>
+            style={{
+              borderRadius: 5,
+              alignItems: 'center',
+              marginBottom: 10
+            }}
+            data={this.state.data}
+            width={Dimensions.get('window').width - 25}
+            height={200}
+            chartConfig={chartConfig}/>
+          <View style={{position: 'absolute', right: 0, top: 5}}>
             <Icon.Button
                name={'info-outline'}
                size={this.state.InfoIconSize}
@@ -322,8 +312,8 @@ class HomeScreen extends React.Component {
                 this.setState({InfoIconSize: 25})
                 this.setState({InfoIconBackground: '#ffffff'})
                  this.props.navigation.push('Info')
-                 }}></Icon.Button>
-            </View>
+                }}></Icon.Button>
+          </View>
           <View> 
            <Text style={[styles.greyTextSmall, {marginLeft:-10}]}>Anzahl Prüfungen:  {this.state.examsCount}</Text>
            <Text style={[styles.greyTextSmall, {marginLeft:-10}]}>Durchschnittsnote: {this.state.gradeAvarage}</Text>
@@ -346,11 +336,10 @@ class HomeScreen extends React.Component {
               onPress={async () => {
                 this.setState({disableUpdateButton: true, isUpdatingScreens: true})
                 //check network connection to hisqis
-                  //the if-clauses need to be as they are!
+                //DONT CHANGE THE FOLLOWING WITHOUT REAL HARD THINKING!
                 if (await utils.hisqis_reachable()) {
-                  //execute background task
                   init.background_task().then(async (resp) => {
-                    //if another screen needs to be shown, because there is an update
+                    //check another screen needs to be shown, because there is an update
                     if(resp === 'got_new_grade' || resp === "got_new_exam") {
                       this.props.navigation.replace('Home')
                     }
@@ -370,13 +359,12 @@ class HomeScreen extends React.Component {
             />
           )}
           <View style={{marginHorizontal: 12, marginTop: 5}}>{this.renderGradesList()}</View>
-          {//Following buttons are for debugging only
-          }
           {<View style={{marginHorizontal: 60, marginVertical: 20}}>
             <Button
               color="#4a96bf"
               title="App zurücksetzten"
               onPress={() => utils.reset()}/></View>}
+          {/* Buttons for debugging */}
           {/*<View style={{marginHorizontal: 60, marginVertical: 20}}>
             <Button
               style={{margin: 30}}

@@ -1,8 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-
-//This screen appears, when user has a new mark in a module
-//The user can discover and unscratch his grade on this screen
-
 import React from 'react';
 import {StyleSheet, Alert, View, Text, Button} from 'react-native';
 
@@ -13,6 +9,11 @@ import LottieView from 'lottie-react-native';
 
 // import secondary files in ./App
 import * as storage from '../utils/storage';
+
+/*
+    This screen appears, when user has a new mark in a module
+    The user can discover and unscratch his grade on this screen
+*/
 
 class ScratchGrade extends React.Component {
     constructor(props) {
@@ -39,7 +40,7 @@ class ScratchGrade extends React.Component {
     async componentDidMount() {
         this.setState({myYear: this.props.navigation.getParam('subjectYear')})
         this.setState({myName: this.props.navigation.getParam('subjectName')})
-        await new Promise(r => setTimeout(r, 500));
+        await new Promise(r => setTimeout(r, 500)) //timeout required
         this.setState({myGrade: this.props.navigation.getParam('subjectMark')})
         let new_goals = await JSON.parse(await storage._retrieveData('new_goals', ''));
         if(typeof new_goals === 'object' && new_goals !== null) {
@@ -60,7 +61,6 @@ class ScratchGrade extends React.Component {
     onScratchDone = ({ isScratchDone, id }) => {
         // show animation
         this.setState({renderAnimation: true})
-        console.log(parseFloat(this.state.myGrade.replace(",", ".")))
         if(parseFloat(this.state.myGrade.replace(",", ".")) <= parseFloat(this.state.myGoal)) {
             this.setState({status: 'ReachedGoal'})
             this.congrats_animation.play()
@@ -75,9 +75,6 @@ class ScratchGrade extends React.Component {
     }
  
     onScratchTouchStateChanged = ({ id, touchState }) => {
-        // Example: change a state value to stop a containing
-        // FlatList from scrolling while scratching
-        this.setState({ scrollEnabled: !touchState });
     }
 
     renderAnimation=()=>{
@@ -137,7 +134,7 @@ class ScratchGrade extends React.Component {
                     title="Weiter"
                     disabled={this.state.ButtonDisabled}
                     onPress={ async () => {
-                        //remove first element from storage
+                        //delete this grade from storage
                         await storage._retrieveData('new_grade').then((string) => JSON.parse(string))
                         .then(async (new_grades) => {
                           await new_grades.list.shift()
@@ -151,18 +148,10 @@ class ScratchGrade extends React.Component {
                                 storage._storeData('new_goals', JSON.stringify(old_goals))
                             }
                         }
-                        //use navigation.replace() to prevent going back!
                         this.props.navigation.replace('Home')
                     }}
                 />
                 {this.renderAnimation()}
-               
-            {/*<LottieView
-                ref={pitty_animation => {
-                this.pitty_animation = pitty_animation;
-                }}
-                source={require('../assets/2394-dislike.json')}
-            />*/}
             </View>
         )
     }

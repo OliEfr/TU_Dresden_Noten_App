@@ -1,3 +1,6 @@
+
+//In the future this file should contain all used colors
+
 export const Colors = {
   PRIMARY: '#1abc9c',
 

@@ -1,3 +1,7 @@
+/*
+  class to perform perform calculation on grades and prepare for display in chart
+*/
+
 export default class ExamDetails {
     constructor(gradesList) {
       this.gradesList = gradesList; //{e1: { grade: 1,0, isModule: true}, e2: {grade: 1.3, isModule: false}, ...}

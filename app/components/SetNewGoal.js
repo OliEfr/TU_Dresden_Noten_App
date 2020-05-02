@@ -1,10 +1,3 @@
-/* eslint-disable react/no-did-mount-set-state */
-/* eslint-disable react-native/no-inline-styles */
-
-//This screen apperas, when user is enrolled for a new exam
-//Here the user can set a goal for a subject mark
-
-
 import React from 'react';
 import {ScrollView, View, Button, Picker, Text, StyleSheet, Alert} from 'react-native';
 
@@ -15,14 +8,20 @@ import {withNavigation} from 'react-navigation';
 import * as storage from '../utils/storage';
 import SetGoalsList from './SetGoalList';
 
+/*
+  This screen apperas, when user is enrolled for a new exam
+  Here the user can set a goal for a subject mark
+  This screen is also used to set "Abschlussnote" on first login
+*/
+
 class SetNewGoal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      new_exams: [],
-      new_goals: {},
-      notification: ""
-    };
+      new_exams: [],    //list of new exams the user is enrolled in
+      new_goals: {},    //here the new goals are saved
+      notification: ""  //only required if "Abschlussnote"
+    }
   }
 
   static navigationOptions = ({navigation}) => {
@@ -32,16 +31,18 @@ class SetNewGoal extends React.Component {
       navigationOptions: {
         headershown: false,
       }
-    };
-  };
+    }
+  }
 
-  async componentDidMount() {
-      await this.setState({new_exams: this.props.navigation.getParam('list')})
+  componentDidMount() {
+      this.setState({new_exams: this.props.navigation.getParam('list')})
+      //display alert if setting abschlussnote
       if(this.state.new_exams[0] === "Abschlussnote") {
         this.setState({notification: "Denke gut darüber nach - du kannst das später nicht ändern!"})
       }
   }
 
+  //state handler, to set new goals in this component
   handleState = (value, item) => {
     let old_goals = this.state.new_goals
     old_goals[item] = value
@@ -49,18 +50,20 @@ class SetNewGoal extends React.Component {
   }
 
   renderNewExamsList = () => {
-    const items = [];
+    const items = []
+    //create list entry for every new exam
     for (var item of this.state.new_exams) {
       items.push(
         <SetGoalsList
           item={item}
           stateHandler={this.handleState}
         />
-      );
+      )
     }
-    return items;
-  };
+    return items
+  }
 
+  //true, if there is a goal for each new
   newGoalsIsValid = () => {
     if (Object.keys(this.state.new_goals).length === this.state.new_exams.length) {
       return true
@@ -89,24 +92,26 @@ class SetNewGoal extends React.Component {
                 } else {
                 //save else
                   await storage._retrieveData('new_goals').then((string) => {return JSON.parse(string)})
-                    .then(async (new_grade_json) => {
-                      if(typeof new_grade_json === 'object' && new_grade_json !== null) {
-                        Object.keys(this.state.new_goals).forEach(key => new_grade_json[key] = this.state.new_goals[key])
-                      } else {
-                        new_grade_json = this.state.new_goals
-                      }
-                      await storage._storeData('new_goals', JSON.stringify(new_grade_json));
-                  });
+                  .then(async (new_grade_json) => {
+                    //add new goals to previous new goals
+                    if(typeof new_grade_json === 'object' && new_grade_json !== null) {
+                      Object.keys(this.state.new_goals).forEach(key => new_grade_json[key] = this.state.new_goals[key])
+                    } else {
+                      new_grade_json = this.state.new_goals
+                    }
+                    await storage._storeData('new_goals', JSON.stringify(new_grade_json));
+                  })
+                  //clear new_exam
                   await storage._storeData('new_exam', '');
                 }
-                //if user visits first time, goto GetBatteryOptimizationPermission.js
-                //else goto homescreen
+                //if user visits first time, goto GetBatteryOptimizationPermission Screen else goto homescreen
                 if(Object.keys(this.state.new_goals)[0] === "Abschlussnote") {
                   this.props.navigation.replace('GetBatteryOptimizationPermission')
                 } else {
                   Alert.alert("Super!", "Ich habe es gespeichert.\nViel Spaß beim Lernen!") 
                   this.props.navigation.replace('Home')
                 }
+              //alert if new goals are not valid
               } else {
                 Alert.alert("Meldung", "Deine Leistungen werden am besten, wenn du ein Ziel für jedes Fach angibst!")
               }
@@ -119,40 +124,6 @@ class SetNewGoal extends React.Component {
 
 //styles
 const styles = StyleSheet.create({
-  linkText: {
-    lineHeight: 25,
-    textDecorationLine: "underline",
-    color: '#0000FF',
-    fontSize: 18,
-    fontWeight: '500',
-    fontFamily: 'Roboto',
-    textAlign: 'center',
-    
-  },
-  orangeTextBold: {
-    lineHeight: 100,
-    textAlign: 'center',
-    color: '#f06449',
-    fontSize: 90,
-    fontWeight: '400',
-    fontFamily: 'Roboto',
-  },
-  greyTextSmall: {
-    lineHeight: 25,
-    color: '#888888',
-    fontSize: 18,
-    fontWeight: '500',
-    fontFamily: 'Roboto',
-    paddingLeft: 30,
-  },
-  orangeText: {
-    lineHeight: 70,
-    textAlign: 'center',
-    color: '#f06449',
-    fontSize: 40,
-    fontWeight: '100',
-    fontFamily: 'Roboto',
-  },
   orangeTextSmall: {
     lineHeight: 35,
     textAlign: 'center',

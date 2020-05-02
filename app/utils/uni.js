@@ -2,18 +2,20 @@
 import tud_fetch from '../fetch_utils/tu_dresden';
 import * as storage from './storage';
 
-//this class stores information about a users university account
-//this class performs logic ontop of this information
-//this class puts a level of abstraction on tud_fetch, which directly handels http-traffic with hisqis
+/*
+    this class stores information about a users university account and performs logic ontop of this information
+    this class puts a level of abstraction on tud_fetch, which directly handels http-traffic with hisqis
+*/
 
 export default class Uni {
     constructor(username, password, gradesList, university){
         if (university === 'TU Dresden'){
             this.uni = new tud_fetch(username, password, gradesList);
-        } else if (university === 'TU Darmstadt') {
-            //Change to tudarm_fetch as soon as implemented!
-            this.uni = new tud_fetch(username, password, gradesList);
-        }
+        } 
+        //any university could be supported
+        //else if (university === 'TU Darmstadt') {
+        //    this.uni = new tud_fetch(username, password, gradesList);
+        //}
     }
 
     save() {
