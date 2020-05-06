@@ -37,9 +37,9 @@ class InfoPage extends React.Component {
   render() {
     return (
       <View style={{
-        flex:1, margin: 40
+        flex:1, margin: 40,
         }}>
-        <Text style={[styles.blueTextSmall, { flex: 5, textAlignVertical: 'center'}]}>Um Benachrichtigung bei neuen Noten zu bekommen, musst du die Batterie Optimierung für Grade<Text style={[styles.blueTextSmall,{color: '#f06449',}]}>Race</Text> deaktivieren.{'\n'}</Text>
+        <Text style={[styles.blueTextSmall, { flex: 5, textAlignVertical: 'center'}]}>Um Benachrichtigung bei neuen Noten zu bekommen, musst du die Akku-Optimierung für Grade<Text style={[styles.blueTextSmall,{color: '#f06449',}]}>Race</Text> deaktivieren.{'\n'}</Text>
         <Text style={[styles.greyTextSmall, { flex: 3, marginTop: 0, }]}>wähle "Alle Apps"{'\n'}suche "GradeRace"{'\n'}wähle "nicht-optimieren"{'\n'}</Text>
         <View
             style={{

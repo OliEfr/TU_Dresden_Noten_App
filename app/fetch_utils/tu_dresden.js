@@ -7,6 +7,7 @@ import University from './university';
 
 /*
     This class directly handles http-traffic with hisqis  
+    dummy_grades used for test-login. See bottom
 */
 
 export default class tud_fetch extends University {
@@ -50,6 +51,13 @@ export default class tud_fetch extends University {
     //read grades
     parseGrades(){
         return new Promise(async(resolve,reject) => {
+            //dumym login
+            if(this.username='1234' && this.password === '1234') {
+                this.grades = dummy_grades_json     //definition at bottom
+                this.gradesList = dummy_grade_list  //definition at bottom
+                return resolve(true)
+            }
+            
             //this must be assigned to that, because jQuery (and cheerio) .each() function has its own scope
             var that = this;
             var $ = this.$;
@@ -121,6 +129,13 @@ export default class tud_fetch extends University {
     //read e.g. username
     parseUserInfo(){
         return new Promise(async(resolve, reject) => {
+            //load dummy
+            if(this.username='1234' && this.password === '1234') {
+                this.name = 'Max Musterstudent'
+                this.studiengang = 'Maschinenbau'
+                return resolve(true)
+            }
+            
             //this must be assigned to that, because jQuery (and cheerio) .each() function has its own scope
             var that = this;
             this.$("table[summary='Liste der Stammdaten des Studierenden'] > tbody").children().each(function() {
@@ -170,7 +185,13 @@ export default class tud_fetch extends University {
     
     //fetch from hisqis
     fetch(){
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
+            //dummy login
+            if(this.username='1234' && this.password === '1234') {
+                return resolve(true)
+            }
+
+            
             let asi = ''
             let graduation_id =''
             //login
@@ -313,3 +334,87 @@ export default class tud_fetch extends University {
         })
     }
 }
+
+const dummy_grade_list = {
+    "1" : {name: "exam1", year: "year", grade: "1", isModule: false, status: 'bestanden'},
+    "2" : {name: "exam2", year: "year", grade: "2", isModule: false, status: 'bestanden'},
+    "3" : {name: "exam3", year: "year", grade: "3", isModule: false, status: 'bestanden'},
+    "4" : {name: "exam4", year: "year", grade: "4", isModule: false, status: 'bestanden'},
+    "5" : {name: "exam5", year: "year", grade: "1", isModule: false, status: 'bestanden'},
+    "6" : {name: "exam6", year: "year", grade: "2", isModule: false, status: 'bestanden'},
+    "7" : {name: "exam7", year: "year", grade: "3", isModule: false, status: 'bestanden'},
+    "8" : {name: "exam8", year: "year", grade: "2", isModule: false, status: 'bestanden'},
+    "9" : {name: "exam9", year: "year", grade: "2", isModule: false, status: 'bestanden'},
+    "11" : {name: "exam11", year: "year", grade: "2", isModule: false, status: 'bestanden'},
+    "12" : {name: "exam12", year: "year", grade: "1", isModule: false, status: 'bestanden'},
+    "13" : {name: "exam13", year: "year", grade: "2", isModule: false, status: 'bestanden'},
+    "14" : {name: "exam14", year: "year", grade: "1", isModule: false, status: 'bestanden'},
+    "15" : {name: "exam15", year: "year", grade: "3", isModule: false, status: 'bestanden'},
+    "16" : {name: "exam16", year: "year", grade: "1", isModule: false, status: 'bestanden'},
+    "17" : {name: "exam17", year: "year", grade: "1", isModule: false, status: 'bestanden'},
+    "18" : {name: "exam18", year: "year", grade: "2", isModule: false, status: 'bestanden'},
+}
+
+const dummy_grades_json = {
+    modules: [
+      {
+        module_name: 'Module1',
+        module_mark: 2.3,
+        status: 'bestanden',
+        cp: 2,
+        subjects: [
+          {name: 'Subject1', mark: 2.3, year: 'SoSe 19', status: 'bestanden'},
+          {name: 'Subject2', mark: 4.0, year: 'SoSe 19', status: 'in Bearbeitung'},
+          {name: 'Subject3', mark: 1.0, year: 'SoSe 19', status: 'in Bearbeitung'},
+          {name: 'Subject4', mark: 1.3, year: 'SoSe 19', status: 'bestanden'},
+        ],
+      },
+      {
+         module_name: 'Module2',
+         module_mark: 1.0,
+         status: 'bestanden',
+         cp: 2,
+         subjects: [
+           {name: 'Subject1', mark: 2.3, year: 'SoSe 19', status: 'bestanden'},
+           {name: 'Subject2', mark: 3.0, year: 'SoSe 19', status: 'n Bearbeitung'},
+           {name: 'Subject3', mark: 2.0, year: 'SoSe 19', status: 'bestanden'},
+           {name: 'Subject4', mark: 1.3, year: 'SoSe 19', status: 'bestanden'},
+         ],
+       },
+       {
+         module_name: 'Module3',
+         module_mark: 3.0,
+         status: 'in Bearbeitung',
+         cp: 2,
+         subjects: [
+           {name: 'Subject1', mark: 2.3, year: 'SoSe 19', status: 'in Bearbeitung'},
+           {name: 'Subject2', mark: 1.0, year: 'SoSe 19', status: 'bestanden'},
+           {name: 'Subject3', mark: 2.0, year: 'SoSe 19', status: 'bestanden'},
+           {name: 'Subject4', mark: 3.3, year: 'SoSe 19', status: 'bestanden'},
+         ],
+       },
+       {
+         module_name: 'Module4',
+         module_mark: 1.2,
+         status: 'bestanden',
+         cp: 2,
+         subjects: [
+           {name: 'Subject1', mark: 2.3, year: 'SoSe 19', status: 'n Bearbeitung'},
+           {name: 'Subject2', mark: 4.0, year: 'SoSe 19', status: 'bestanden'},
+           {name: 'Subject3', mark: 2.0, year: 'SoSe 19', status: 'bestanden'},
+           {name: 'Subject4', mark: 3.3, year: 'SoSe 19', status: 'bestanden'},
+         ],
+       },
+       {
+         module_name: 'Module5',
+         module_mark: 1.9,
+         status: 'bestanden',
+         cp: 2,
+         subjects: [
+           {name: 'Subject1', mark: 1.3, year: 'SoSe 19', status: 'bestanden'},
+           {name: 'Subject2', mark: 4.0, year: 'SoSe 19', status: 'bestanden'},
+           {name: 'Subject3', mark: 4.0, year: 'SoSe 19', status: 'bestanden'},
+           {name: 'Subject4', mark: 1.3, year: 'SoSe 19', status: 'bestanden'},
+         ],
+       },
+     ]};
