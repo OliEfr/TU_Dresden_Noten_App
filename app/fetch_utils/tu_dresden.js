@@ -52,7 +52,7 @@ export default class tud_fetch extends University {
     parseGrades(){
         return new Promise(async(resolve,reject) => {
             //dumym login
-            if(this.username='1234' && this.password === '1234') {
+            if(this.username === '1234' && this.password === '1234') {
                 this.grades = dummy_grades_json     //definition at bottom
                 this.gradesList = dummy_grade_list  //definition at bottom
                 return resolve(true)
@@ -130,7 +130,7 @@ export default class tud_fetch extends University {
     parseUserInfo(){
         return new Promise(async(resolve, reject) => {
             //load dummy
-            if(this.username='1234' && this.password === '1234') {
+            if(this.username === '1234' && this.password === '1234') {
                 this.name = 'Max Musterstudent'
                 this.studiengang = 'Maschinenbau'
                 return resolve(true)
@@ -187,11 +187,10 @@ export default class tud_fetch extends University {
     fetch(){
         return new Promise(async (resolve, reject) => {
             //dummy login
-            if(this.username='1234' && this.password === '1234') {
+            if(this.username === '1234' && this.password === '1234') {
                 return resolve(true)
             }
 
-            
             let asi = ''
             let graduation_id =''
             //login

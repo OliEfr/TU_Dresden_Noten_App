@@ -13,6 +13,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
     Keychain and AsynStorage save key-value-pairs.
 
+    For Documentation on which data are saved see Readme.
+
 */
 
 //load credentials from keychain-storage
